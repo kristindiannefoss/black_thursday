@@ -36,3 +36,6 @@
   Kris: Prefer not to work early mornings.  Tend to be indecisive as well, lets make big kid decisions.  
 
 *Additional Notes:
+  Aim to get 4's, except for functional expectations.  Wants to focus on writing good code, then go back if there is time to do more.
+  Refactoring as you go along
+  
