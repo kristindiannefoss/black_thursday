@@ -1,24 +1,30 @@
 require 'pry'
 
 class MerchantRepository
-  def initialize(merchants)
-    #returns an array of all known Merchant instances
+  def initialize(merchants = [])
+    @merchants = merchants
   end
 
   def all
-    #returns an array of all known Merchant instances
+    @merchants
   end
 
-  def find_by_id
-    #returns either nil or an instance of Merchant
+  def find_by_id(id)
+    @merchants.detect do |merchant_object|
+      merchant_object.id == id
+    end
   end
 
-  def find_by_name
-    #returns either nil or an instance of Merchant having done a case insensitive search
+  def find_by_name(name)
+    @merchants.detect do |merchant_object|
+      merchant_object.name.downcase == name.downcase
+    end
   end
 
-  def find_by_all_name
-    #returns either [] or one or more matches which contain the supplied name fragment, case insensitive
+  def find_all_by_name(name_fragment)
+    @merchants.select do |merchant_object|
+      merchant_object.name.downcase.include?(name_fragment.downcase)
+    end
   end
 
 end
