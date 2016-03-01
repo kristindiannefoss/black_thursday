@@ -1,18 +1,10 @@
 require 'pry'
 
 class Merchant
-  def id
-    #returns the integer id of the merchant
+  attr_reader :id, :name
+
+  def initialize(args)
+    @id   = args[:id] #{:id => "somevalue"}
+    @name = args[:name]
   end
-
-  def name
-    #returns the name of the merchant
-  end
-end
-
-
-if __FILE__ == $0
-  m = Merchant.new({:id => 5, :name => "Turing School"})
-  puts m.id
-  puts m.name
 end
