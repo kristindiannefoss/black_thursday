@@ -1,6 +1,6 @@
 require 'pry'
 
-class MerchantRepository
+class Item
   def initialize
   end
 
