@@ -39,7 +39,7 @@ class ItemRepository
 
   def find_all_by_price_in_range(lowest_price, highest_price)
     @items.select do |item_object|
-      item_object if lowest_price <= item_object.price && item_object.price <= highest_price
+      item_object if lowest_price <= item_object.unit_price && item_object.unit_price <= highest_price
     end
      # returns either [] or instances of Item where the supplied price is in the supplied range (a single Ruby range instance is passed in)
   end
