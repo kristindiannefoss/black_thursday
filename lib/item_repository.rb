@@ -51,6 +51,10 @@ class ItemRepository
     end
      # returns either [] or instances of Item where the supplied merchant ID matches that supplied
   end
+
+  def inspect
+    "#<#{self.class} #{@merchants.size} rows>"
+  end
 end
 
 if __FILE__ == $0
