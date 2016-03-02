@@ -71,4 +71,9 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal expected, @ir.find_all_by_price_in_range((600..625))
   end
 
+  def test_it_can_find_all_by_merchant_id
+    expected = [@item2, @item3]
+    assert_equal expected, @ir.find_all_by_merchant_id(12334257)
+  end
+
 end

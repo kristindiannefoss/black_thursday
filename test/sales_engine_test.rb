@@ -52,4 +52,14 @@ class SalesEngineTest < Minitest::Test
     assert_equal "Shopin1901", merchants_array[0].name
   end
 
+  def test_it_can_find_items_associated_with_a_merchant
+    merchant = @se.merchants.find_by_id(10)
+    actual = merchant.items
+
+    assert_equal 2, actual.count
+  end
+
+    # # => [<item>, <item>, <item>]
+    # item = @se.items.find_by_id(1)
+    # item.merchant
 end

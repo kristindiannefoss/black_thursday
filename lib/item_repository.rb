@@ -45,7 +45,7 @@ class ItemRepository
      # returns either [] or instances of Item where the supplied price is in the supplied range (a single Ruby range instance is passed in)
   end
 
-  def find_all_by_merchant_id
+  def find_all_by_merchant_id(merchant_id)
     items.select do |item_object|
       item_object.merchant_id == merchant_id
     end
