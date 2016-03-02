@@ -39,7 +39,7 @@ class SalesEngineTest < Minitest::Test
   def test_it_can_read_items_from_a_csv
     items_array = SalesEngine.read_items("./test/test_data/items_stub.csv")
 
-    assert_equal 8, items_array.count
+    assert_equal 9, items_array.count
     assert_kind_of Item, items_array[0]
     assert_equal "Manchette cuir Mathilde", items_array[0].name
   end
@@ -53,13 +53,19 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_find_items_associated_with_a_merchant
-    merchant = @se.merchants.find_by_id("10")
+    merchant = @se.merchants.find_by_id(10)
     actual = merchant.items
+    expected = @se.items.find_all_by_merchant_id(10)
 
     assert_equal 2, actual.count
+    assert_equal expected, actual
   end
 
-    # # => [<item>, <item>, <item>]
-    # item = @se.items.find_by_id(1)
-    # item.merchant
+  def test_it_can_find_merchant_associated_with_an_item
+    item   = @se.items.find_by_id(1)
+    actual = item.merchant
+
+    assert_equal 10, actual.id
+  end
+
 end

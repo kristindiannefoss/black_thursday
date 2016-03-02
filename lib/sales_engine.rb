@@ -25,6 +25,10 @@ class SalesEngine
       merchant.items = items_repo_object.find_all_by_merchant_id(merchant.id)
     end
 
+    items_repo_object.all.each do |item|
+      item.merchant = merchants_repo_object.find_by_id(item.merchant_id)
+    end
+
     SalesEngine.new(merchants_repo_object, items_repo_object)
   end
 

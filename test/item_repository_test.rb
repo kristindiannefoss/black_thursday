@@ -53,7 +53,7 @@ class ItemRepositoryTest < Minitest::Test
 
   def test_it_can_find_all_by_price
     expected = [@item1, @item3]
-    assert_equal expected, @ir.find_all_by_price(65000)
+    assert_equal expected, @ir.find_all_by_price(650)
   end
 
   def test_it_returns_an_empty_array_for_a_price_that_does_not_exist
@@ -63,7 +63,7 @@ class ItemRepositoryTest < Minitest::Test
 
   def test_it_can_find_all_by_price_in_range
     expected = [@item1, @item3]
-    assert_equal expected, @ir.find_all_by_price_in_range((62500..67500))
+    assert_equal expected, @ir.find_all_by_price_in_range((625..675))
   end
 
   def test_it_returns_an_empty_array_for_a_price_that_does_not_exist

@@ -12,6 +12,10 @@ class MerchantRepository
     merchants
   end
 
+  def count
+    merchants.count
+  end
+
   def find_by_id(id)
     merchants.detect { |merchant_object| merchant_object.id == id }
   end
