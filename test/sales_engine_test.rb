@@ -37,7 +37,7 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_read_items_from_a_csv
-    items_array = SalesEngine.read_items("./test/test_data/items_stub.csv")
+    items_array = @empty_engine.read_items("./test/test_data/items_stub.csv")
 
     assert_equal 6, items_array.count
     assert_kind_of Item, items_array[0]
@@ -45,7 +45,7 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_read_merchants_from_a_csv
-    merchants_array = SalesEngine.read_merchants("./test/test_data/merchants_stub.csv")
+    merchants_array = @empty_engine.read_merchants("./test/test_data/merchants_stub.csv")
 
     assert_equal 3, merchants_array.count
     assert_kind_of Merchant, merchants_array[0]

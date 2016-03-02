@@ -9,21 +9,24 @@ class SalesEngine
   attr_reader :merchants, :items
 
   def initialize(merchants = nil, items = nil)
-    @merchants = merchants
-    @items     = items
-  end
-
-  def self.from_csv(args)
-    items_array     = read_items(args[:items]) if args[:items]
-    merchants_array = read_merchants(args[:merchants]) if args[:merchants]
+    items_array     = read_items(items) if items
+    merchants_array = read_merchants(merchants) if merchants
 
     items_repo_object     = ItemRepository.new(items_array)
     merchants_repo_object = MerchantRepository.new(merchants_array)
 
-    SalesEngine.new(merchants_repo_object, items_repo_object)
+    @merchants = merchants_repo_object
+    @items     = items_repo_object
+    # @merchants.all.each do |merchant|
+    #   merchant.items = items.find_all_by_merchant_id(merchant.id)
+    # end
   end
 
-  def self.read_items(location)
+  def self.from_csv(args)
+    new(args[:merchants], args[:items])
+  end
+
+  def read_items(location)
     items_csv = read_csv(location)
     items_array = []
     # binding.pry
@@ -38,7 +41,7 @@ class SalesEngine
     items_array
   end
 
-  def self.read_merchants(location)
+  def read_merchants(location)
     merchants_csv  = read_csv(location)
     merchant_array = []
     merchants_csv.each do |merchant|
@@ -47,7 +50,7 @@ class SalesEngine
     merchant_array
   end
 
-  def self.read_csv(csv_location)
+  def read_csv(csv_location)
     CSV.open(csv_location, headers: true, header_converters: :symbol)
   end
 
