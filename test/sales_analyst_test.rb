@@ -18,17 +18,23 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_calculate_the_average_items_per_merchant
-    expected = 2.25
+    expected = 0.75
     actual   = @sa.average_items_per_merchant
 
     assert_equal expected, actual
   end
 
-  def test_it_can_test_for_standard_deviation_in_merchant_average
-    expected = 2.7613402542968153
+  def test_it_can_find_standard_deviation_in_merchant_average
+    expected = 0.8569568250501305
     actual   = @sa.average_items_per_merchant_standard_deviation
 
     assert_equal expected, actual
   end
 
+  def test_it_can_display_merchants_with_high_item_count
+    expected = [@se.merchants.find_by_id(10), @se.merchants.find_by_id(12334455)]
+    actual   = @sa.merchants_with_high_item_count
+
+    assert_equal expected, actual
+  end
 end
