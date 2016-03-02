@@ -20,11 +20,11 @@ class SalesEngine
     items_repo_object     = ItemRepository.new(items_array)
     merchants_repo_object = MerchantRepository.new(merchants_array)
 
-    sales_engine    = SalesEngine.new(merchants_repo_object, items_repo_object)
-
-    merchants.all.each do |merchant|
-      merchant.items = items.find_all_by_merchant_id(merchant.id)
+    merchants_repo_object.all.each do |merchant|
+      merchant.items = items_repo_object.find_all_by_merchant_id(merchant.id)
     end
+
+    SalesEngine.new(merchants_repo_object, items_repo_object)
   end
 
   def self.read_items(location)
@@ -36,6 +36,7 @@ class SalesEngine
                                name: item[:name],
                                description: item[:description],
                                unit_price: item[:unit_price],
+                               merchant_id: item[:merchant_id],
                                created_at: item[:created_at],
                                updated_at: item[:updated_at]})
     end
