@@ -1,5 +1,6 @@
 require 'pry'
 require 'csv'
+require 'bigdecimal'
 require_relative 'merchant'
 require_relative 'item'
 require_relative 'item_repository'
@@ -30,7 +31,6 @@ class SalesEngine
   def self.read_items(location)
     items_csv = read_csv(location)
     items_array = []
-    # binding.pry
     items_csv.each do |item|
       items_array << Item.new({id: item[:id],
                                name: item[:name],
