@@ -20,7 +20,7 @@ class SalesEngine
     items_repo_object     = ItemRepository.new(items_array)
     merchants_repo_object = MerchantRepository.new(merchants_array)
 
-    sales_engine    = SalesEngine.new(merchants_repo_object, items_repo_object)
+    SalesEngine.new(merchants_repo_object, items_repo_object)
   end
 
   def self.read_items(location)
