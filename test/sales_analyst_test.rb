@@ -37,4 +37,11 @@ class SalesAnalystTest < Minitest::Test
 
     assert_equal expected, actual
   end
+
+  def test_it_can_find_average_price_for_merchant_with_id
+    expected = BigDecimal.new(75)
+    actual   = @sa.average_item_price_for_merchant(10) # => BigDecimal
+
+    assert_equal expected, actual
+  end
 end
