@@ -1,4 +1,5 @@
 require 'pry'
+require 'time'
 
 
 class Invoice
