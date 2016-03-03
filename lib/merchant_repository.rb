@@ -5,10 +5,15 @@ class MerchantRepository
 
   def initialize(merchants = [])
     @merchants = merchants
+
   end
 
   def all
     merchants
+  end
+
+  def count
+    merchants.count
   end
 
   def find_by_id(id)
@@ -16,13 +21,18 @@ class MerchantRepository
   end
 
   def find_by_name(name)
-    merchants.detect { |merchant_object| merchant_object.name.downcase == name.downcase }
+    merchants.detect { |merchant_object| merchant_object
+                        .name.downcase == name.downcase }
   end
 
   def find_all_by_name(name_fragment)
     merchants.select do |merchant_object|
       merchant_object.name.downcase.include?(name_fragment.downcase)
     end
+  end
+
+  def inspect
+    "#<#{self.class} #{@merchants.size} rows>"
   end
 
 end
