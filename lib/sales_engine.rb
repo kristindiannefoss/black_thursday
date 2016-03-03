@@ -22,29 +22,6 @@ class SalesEngine
     SalesEngine.new(merchants_repo, items_repo)
   end
 
-  # def self.read_all_csv(args)
-  #   items_array     = read_items(args[:items]) if args[:items]
-  #   merchants_array = read_merchants(args[:merchants]) if args[:merchants]
-  #   [items_array, merchants_array]
-  # end
-  #
-  # def self.read_items(location)
-  #   items_csv = read_one_csv(location)
-  #   items_csv.map do |item|
-  #     Item.new(item)
-  #   end
-  # end
-  #
-  # def self.read_merchants(location)
-  #   merchants_csv  = read_one_csv(location)
-  #   merchants_csv.map do |merchant|
-  #     Merchant.new(merchant)
-  #   end
-  # end
-
-
-
-
   def self.read_all_csv(args)
     [ make_objs(args[:items], Item),
       make_objs(args[:merchants], Merchant)
@@ -56,9 +33,6 @@ class SalesEngine
       class_type.new(item)
     end
   end
-
-
-
 
   def self.read_one_csv(csv_location)
     CSV.open(csv_location, headers: true, header_converters: :symbol)
