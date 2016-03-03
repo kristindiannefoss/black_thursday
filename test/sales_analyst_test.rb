@@ -60,4 +60,38 @@ class SalesAnalystTest < Minitest::Test
     assert_equal expected, actual
   end
 
+  def test_it_can_find_average_invoices_per_merchant
+    expected =  0.97
+    actual   =  @sa.average_invoices_per_merchant
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_find_average_invoices_per_merchant_standard_deviation
+    expected =  0.96
+    actual   =  @sa.average_invoices_per_merchant_standard_deviation
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_find_top_merchants_by_invoice_count
+    expected =  []
+    actual   =  @sa.top_merchants_by_invoice_count
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_find_bottom_merchants_by_invoice_count
+    expected =  []
+    actual   =  @sa.bottom_merchants_by_invoice_count
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_return_top_days_by_invoice_count
+    expected =  []
+    actual   = @sa.top_days_by_invoice_count 
+
+    assert_equal expected, actual
+  end
 end

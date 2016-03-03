@@ -61,4 +61,38 @@ class SalesAnalyst
     end
   end
 
+  def average_invoices_per_merchant
+    (sales_engine.invoices.count.to_f / sales_engine.merchants.count).round(2)
+  end
+
+  def average_invoices_per_merchant_standard_deviation
+    av_in = average_invoices_per_merchant
+
+    Math.sqrt(@sales_engine.merchants.all.map do |merchant|
+      ((merchant.invoices.count) - av_in)**2
+    end.reduce(:+)/@sales_engine.merchants.count).round(2)
+  end
+
+  def top_merchants_by_invoice_count
+    minimum_count = average_invoices_per_merchant + (average_invoices_per_merchant_standard_deviation * 2)
+
+    @sales_engine.merchants.all.select do |merchant|
+      merchant.invoices.count > minimum_count
+    end
+  end
+
+  def bottom_merchants_by_invoice_count
+    maximum_count = average_invoices_per_merchant - (average_invoices_per_merchant_standard_deviation * 2)
+
+    @sales_engine.merchants.all.select do |merchant|
+      merchant.invoices.count < maximum_count
+    end
+  end
+
+  def top_days_by_invoice_count
+    #we need to look at the invoices must parse date into format strf time %A, and group by day created, then return the top days, day array index -1, -2,
+    invoices.all.group_by do |date|
+
+    end
+  end
 end

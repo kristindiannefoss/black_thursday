@@ -10,7 +10,7 @@ class Invoice
     @id            = args[:id].to_i
     @customer_id   = args[:customer_id].to_i
     @merchant_id   = args[:merchant_id].to_i
-    @status        = args[:status]
+    @status        = args[:status].to_sym
     @created_at    = Time.parse(args[:created_at])
     @updated_at    = Time.parse(args[:updated_at])
     @merchant      = nil

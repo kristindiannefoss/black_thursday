@@ -11,6 +11,10 @@ class InvoiceRepository
     invoices
   end
 
+  def count
+    invoices.count
+  end
+
   def find_by_id(id)
     invoices.detect { |invoice_object| invoice_object.id == id }
   end
@@ -32,4 +36,8 @@ class InvoiceRepository
       invoice_object.status == status
     end
   end
+
+  def inspect
+  "#<#{self.class} #{@merchants.size} rows>"
+end
 end
