@@ -42,5 +42,23 @@ class SalesAnalyst
     end.reduce(:+)/@sales_engine.merchants.all.count).round(2)
   end
 
+  def average_item_price
+    @sales_engine.items.total_price / @sales_engine.items.count
+  end
+
+  def average_unit_price_standard_deviation
+    av_price = average_item_price
+
+    Math.sqrt(@sales_engine.items.all.map do |item|
+      ((item.unit_price) - av_price)**2
+    end.reduce(:+)/@sales_engine.items.count).round(2)
+  end
+
+  def golden_items
+    min_price = average_item_price + (2 * average_unit_price_standard_deviation)
+    @sales_engine.items.all.select do |item|
+      item.unit_price > min_price
+    end
+  end
 
 end

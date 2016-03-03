@@ -14,6 +14,12 @@ class ItemRepository
     items.count
   end
 
+  def total_price
+    all.map do |item|
+      item.unit_price
+    end.reduce(:+)
+  end
+
   def find_by_id(id)
     items.detect do |item_object|
       item_object.id == id

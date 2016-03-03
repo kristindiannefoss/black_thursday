@@ -25,7 +25,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_find_standard_deviation_in_merchant_average
-    expected = 0.8569568250501305
+    expected = 0.86
     actual   = @sa.average_items_per_merchant_standard_deviation
 
     assert_equal expected, actual
@@ -46,8 +46,15 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_find_the_average_price_for_all_merchants
-    expected = BigDecimal.new("3.59375")
+    expected = BigDecimal.new("3.59")
     actual   = @sa.average_average_price_per_merchant
+
+    assert_equal expected, actual
+  end
+
+  def test_it_can_find_golden_items
+    expected = [@se.items.find_by_id(263397785)]
+    actual   = @sa.golden_items # => [<item>, <item>, <item>, <item>]
 
     assert_equal expected, actual
   end
