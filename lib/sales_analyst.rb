@@ -1,3 +1,5 @@
+require 'pry'
+
 class SalesAnalyst
   attr_reader :sales_engine
 
@@ -6,7 +8,7 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant
-    sales_engine.items.count.to_f / sales_engine.merchants.count
+    (sales_engine.items.count.to_f / sales_engine.merchants.count).round(2)
   end
 
   def average_items_per_merchant_standard_deviation
@@ -14,7 +16,7 @@ class SalesAnalyst
 
     Math.sqrt(@sales_engine.merchants.all.map do |merchant|
       ((merchant.items.count) - av_it)**2
-    end.reduce(:+)/@sales_engine.merchants.count)
+    end.reduce(:+)/@sales_engine.merchants.count).round(2)
   end
 
   def merchants_with_high_item_count
@@ -26,9 +28,19 @@ class SalesAnalyst
   end
 
   def average_item_price_for_merchant(merchant_id)
-    items_for_merchant = @sales_engine.merchants.find_by_id(merchant_id).items
-    items_for_merchant.map do |item|
+    current_merchant = @sales_engine.merchants.find_by_id(merchant_id)
+    return 0 if current_merchant.items == []
+    items_for_merchant = current_merchant.items
+    (items_for_merchant.map do |item|
       item.unit_price
-    end.reduce(:+)/items_for_merchant.count
+    end.reduce(:+)/items_for_merchant.count).round(2)
   end
+
+  def average_average_price_per_merchant
+    (@sales_engine.merchants.all.map do |merchant|
+      average_item_price_for_merchant(merchant.id)
+    end.reduce(:+)/@sales_engine.merchants.all.count).round(2)
+  end
+
+
 end
