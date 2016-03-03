@@ -15,49 +15,49 @@ class SalesEngine
   end
 
   def self.from_csv(args)
-    items_array     = read_items(args[:items]) if args[:items]
-    merchants_array = read_merchants(args[:merchants]) if args[:merchants]
+    items_array, merchants_array = read_all_csv(args)
+    items_repo, merchants_repo = create_repos(items_array, merchants_array)
+    inject_repositories(merchants_repo, items_repo)
 
-    items_repo_object     = ItemRepository.new(items_array)
-    merchants_repo_object = MerchantRepository.new(merchants_array)
-
-    merchants_repo_object.all.each do |merchant|
-      merchant.items = items_repo_object.find_all_by_merchant_id(merchant.id)
-    end
-
-    items_repo_object.all.each do |item|
-      item.merchant = merchants_repo_object.find_by_id(item.merchant_id)
-    end
-
-    SalesEngine.new(merchants_repo_object, items_repo_object)
+    SalesEngine.new(merchants_repo, items_repo)
   end
 
-  def self.read_items(location)
-    items_csv = read_csv(location)
-    items_array = []
-    items_csv.each do |item|
-      items_array << Item.new({id: item[:id],
-                               name: item[:name],
-                               description: item[:description],
-                               unit_price: item[:unit_price],
-                               merchant_id: item[:merchant_id],
-                               created_at: item[:created_at],
-                               updated_at: item[:updated_at]})
-    end
-    items_array
+  def self.read_all_csv(args)
+    [ make_objs(args[:items], Item),
+      make_objs(args[:merchants], Merchant)
+    ]
   end
 
-  def self.read_merchants(location)
-    merchants_csv  = read_csv(location)
-    merchant_array = []
-    merchants_csv.each do |merchant|
-      merchant_array << Merchant.new({id: merchant[:id], name: merchant[:name]})
+  def self.make_objs(location, class_type)
+    read_one_csv(location).map do |item|
+      class_type.new(item)
     end
-    merchant_array
   end
 
-  def self.read_csv(csv_location)
+  def self.read_one_csv(csv_location)
     CSV.open(csv_location, headers: true, header_converters: :symbol)
+  end
+
+  def self.create_repos(items_array, merchants_array)
+    [ItemRepository.new(items_array),
+      MerchantRepository.new(merchants_array)]
+  end
+
+  def self.inject_repositories(merchants_repo, items_repo)
+    inject_merchants_repo(merchants_repo, items_repo)
+    inject_items_repo(items_repo, merchants_repo)
+  end
+
+  def self.inject_merchants_repo(merchants_repo, items_repo)
+    merchants_repo.all.each do |merchant|
+      merchant.items = items_repo.find_all_by_merchant_id(merchant.id)
+    end
+  end
+
+  def self.inject_items_repo(items_repo, merchants_repo)
+    items_repo.all.each do |item|
+      item.merchant = merchants_repo.find_by_id(item.merchant_id)
+    end
   end
 
 end
