@@ -36,16 +36,34 @@ class SalesEngineTest < Minitest::Test
     assert_equal "Shopin1901", merchant.name
   end
 
-  def test_it_can_read_items_from_a_csv
-    items_array = SalesEngine.read_items("./test/test_data/items_stub.csv")
+  # def test_it_can_read_items_from_a_csv
+  #   items_array = SalesEngine.read_items("./test/test_data/items_stub.csv")
+  #
+  #   assert_equal 24, items_array.count
+  #   assert_kind_of Item, items_array[0]
+  #   assert_equal "Manchette cuir Mathilde", items_array[0].name
+  # end
+  #
+  # def test_it_can_read_merchants_from_a_csv
+  #   merchants_array = SalesEngine.read_merchants("./test/test_data/merchants_stub.csv")
+  #
+  #   assert_equal 32, merchants_array.count
+  #   assert_kind_of Merchant, merchants_array[0]
+  #   assert_equal "Shopin1901", merchants_array[0].name
+  # end
+
+  def test_it_can_build_objects_from_csv_files
+    items_location = "./test/test_data/items_stub.csv"
+    merchants_location = "./test/test_data/merchants_stub.csv"
+    args = {items: items_location, merchants: merchants_location}
+
+
+    items_array, merchants_array =
+    SalesEngine.read_all_csv(args)
 
     assert_equal 24, items_array.count
     assert_kind_of Item, items_array[0]
     assert_equal "Manchette cuir Mathilde", items_array[0].name
-  end
-
-  def test_it_can_read_merchants_from_a_csv
-    merchants_array = SalesEngine.read_merchants("./test/test_data/merchants_stub.csv")
 
     assert_equal 32, merchants_array.count
     assert_kind_of Merchant, merchants_array[0]
