@@ -72,4 +72,25 @@ class SalesEngineTest < Minitest::Test
     assert_equal 10, actual.id
   end
 
+  def test_it_can_find_a_merchants_invoices
+    merchant = @se.merchants.find_by_id(10)
+    invoice1 = @se.invoices.find_by_id(319)
+    invoice2 = @se.invoices.find_by_id(320)
+
+    assert_equal [invoice1, invoice2], merchant.invoices
+  end
+
+
+  def test_it_can_find_a_merchants_invoices
+    merchant = @se.merchants.find_by_id(12334105)
+
+    assert_equal [], merchant.invoices
+  end
+
+  def test_it_can_find_an_invoices_merchant
+    invoice = @se.invoices.find_by_id(320)
+
+    assert_equal @se.merchants.find_by_id(10), invoice.merchant
+  end
+
 end
