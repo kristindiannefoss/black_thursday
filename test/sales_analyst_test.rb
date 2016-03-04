@@ -88,9 +88,23 @@ class SalesAnalystTest < Minitest::Test
     assert_equal expected, actual
   end
 
+  def test_it_can_return_the_average_count_of_invoices_per_day
+    assert_equal 4.43, @sa.average_invoices_per_day
+  end
+
+  def test_it_can_return_an_array_of_the_count_of_invoices_by_day
+    expected = [["Sunday", 12], ["Tuesday", 3], ["Friday", 3], ["Thursday", 3], ["Monday", 6], ["Wednesday", 2], ["Saturday", 2]]
+
+    assert_equal expected, @sa.invoice_count_by_day
+  end
+
+  def test_it_can_calculate_the_std_dev_of_invoices_per_day
+    assert_equal 3.6, @sa.average_invoices_per_day_standard_deviation
+  end
+
   def test_it_can_return_top_days_by_invoice_count
-    expected =  []
-    actual   = @sa.top_days_by_invoice_count 
+    expected =  ["Sunday"]
+    actual   = @sa.top_days_by_invoice_count
 
     assert_equal expected, actual
   end

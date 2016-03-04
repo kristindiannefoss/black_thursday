@@ -52,17 +52,11 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_it_can_find_all_by_status
-    assert_equal [invoice1, invoice3], @ir.find_all_by_status("pending")
+    assert_equal [invoice1, invoice3], @ir.find_all_by_status(:pending)
   end
 
   def test_it_returns_an_empty_array_when_no_status
     assert_equal [], @ir.find_all_by_status("fail")
   end
 
-
-
 end
-
-#se = SalesEngine.from_csv({:invoices => "./data/invoices.csv"})
-# invoice = se.invoices.find_by_id(6)
-# => <invoice>

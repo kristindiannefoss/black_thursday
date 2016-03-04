@@ -1,4 +1,5 @@
 require 'pry'
+require 'time'
 
 class SalesAnalyst
   attr_reader :sales_engine
@@ -89,10 +90,43 @@ class SalesAnalyst
     end
   end
 
-  def top_days_by_invoice_count
-    #we need to look at the invoices must parse date into format strf time %A, and group by day created, then return the top days, day array index -1, -2,
-    invoices.all.group_by do |date|
+  def average_invoices_per_day
+    (sales_engine.invoices.count.to_f / 7).round(2)
+  end
 
+  def invoice_count_by_day
+    invoices_by_date = @sales_engine.invoices.all.group_by do |invoice|
+      invoice.created_at.strftime("%A")
+    end
+
+    hash_count = []
+    invoices_by_date.each_pair do |key, value|
+      hash_count << [key, value.count]
+    end
+    hash_count
+  end
+
+  def average_invoices_per_day_standard_deviation
+    av_in = average_invoices_per_day
+    invoices_by_day = invoice_count_by_day
+
+    Math.sqrt(invoices_by_day.map do |day, invoices|
+      (invoices - av_in)**2
+    end.reduce(:+)/6).round(2)
+  end
+
+  def top_days_by_invoice_count
+    minimum_count = average_invoices_per_day + (average_invoices_per_day_standard_deviation)
+
+    # binding.pry
+
+    high_sales_days = invoice_count_by_day.select do |day, count|
+      count > minimum_count
+    end
+
+    high_sales_days.map do |days, count|
+      days
     end
   end
+
 end
