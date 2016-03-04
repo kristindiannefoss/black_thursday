@@ -118,8 +118,6 @@ class SalesAnalyst
   def top_days_by_invoice_count
     minimum_count = average_invoices_per_day + (average_invoices_per_day_standard_deviation)
 
-    # binding.pry
-
     high_sales_days = invoice_count_by_day.select do |day, count|
       count > minimum_count
     end
@@ -127,6 +125,11 @@ class SalesAnalyst
     high_sales_days.map do |days, count|
       days
     end
+  end
+
+  def invoice_status(status)
+    ((@sales_engine.invoices.count_by_status[status].to_f / @sales_engine.invoices.count) * 100).round(2)
+
   end
 
 end

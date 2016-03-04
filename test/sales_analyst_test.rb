@@ -108,4 +108,11 @@ class SalesAnalystTest < Minitest::Test
 
     assert_equal expected, actual
   end
+
+  def test_it_can_provide_percentages_by_status
+    assert_equal 32.26, @sa.invoice_status(:pending) # => 5.25
+    assert_equal 51.61, @sa.invoice_status(:shipped) # => 93.75
+    assert_equal 16.13, @sa.invoice_status(:returned) # => 1.00
+  end
+
 end

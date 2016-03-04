@@ -15,6 +15,17 @@ class InvoiceRepository
     invoices.count
   end
 
+  def count_by_status
+    invoices_by_status = all.group_by do |invoice|
+      invoice.status
+    end
+
+    status_count = invoices_by_status.each do |key, value|
+      invoices_by_status[key] = value.count
+    end
+
+  end
+
   def find_by_id(id)
     invoices.detect { |invoice_object| invoice_object.id == id }
   end
