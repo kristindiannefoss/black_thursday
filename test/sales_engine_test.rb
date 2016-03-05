@@ -10,7 +10,8 @@ class SalesEngineTest < Minitest::Test
       :items         => "./test/test_data/items_stub.csv",
       :merchants     => "./test/test_data/merchants_stub.csv",
       :invoices      => "./test/test_data/invoices_stub.csv",
-      :invoice_items => "./test/test_data/invoice_items_stub.csv"
+      :invoice_items => "./test/test_data/invoice_items_stub.csv",
+      :transactions => "./test/test_data/transactions_stub.csv"
     })
   end
 
@@ -43,7 +44,8 @@ class SalesEngineTest < Minitest::Test
     merchants_location = "./test/test_data/merchants_stub.csv"
     invoices_location = "./test/test_data/invoices_stub.csv"
     invoice_item_location = "./test/test_data/invoice_items_stub.csv"
-    args = {items: items_location, merchants: merchants_location, invoices: invoices_location, invoice_items: invoice_item_location}
+    transactions_location = "./test/test_data/transactions_stub.csv"
+    args = {items: items_location, merchants: merchants_location, invoices: invoices_location, invoice_items: invoice_item_location, transactions: transactions_location}
 
     items_array, merchants_array =
     SalesEngine.read_all_csv(args)
