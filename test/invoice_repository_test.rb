@@ -58,5 +58,4 @@ class InvoiceRepositoryTest < Minitest::Test
   def test_it_returns_an_empty_array_when_no_status
     assert_equal [], @ir.find_all_by_status("fail")
   end
-
 end

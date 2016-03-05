@@ -75,5 +75,4 @@ class ItemRepositoryTest < Minitest::Test
     expected = [@item2, @item3]
     assert_equal expected, @ir.find_all_by_merchant_id(12334257)
   end
-
 end

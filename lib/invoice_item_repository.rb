@@ -11,8 +11,6 @@ class InvoiceItemRepository
     invoice_items
   end
 
-  ir.from_csv("./data/invoice_items.csv")
-  
   def find_by_id(id)
     invoice_items.detect { |invoice_item_object| invoice_item_object.id == id }
   end
@@ -27,5 +25,9 @@ class InvoiceItemRepository
     invoice_items.select do |invoice_item_object|
       invoice_item_object.invoice_id == invoice_id
     end
+  end
+
+  def inspect
+  "#<#{self.class} #{@merchants.size} rows>"
   end
 end

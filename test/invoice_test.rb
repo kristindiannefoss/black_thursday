@@ -42,5 +42,4 @@ class InvoiceTest < Minitest::Test
   def test_it_has_a_updated_at_time
     assert_equal Time.parse("2014-03-15"), @invoice.updated_at
   end
-
 end

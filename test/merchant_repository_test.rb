@@ -50,6 +50,4 @@ class MerchantRepositoryTest < Minitest::Test
     expected = []
     assert_equal expected, @mr.find_all_by_name("fail")
   end
-
-
 end

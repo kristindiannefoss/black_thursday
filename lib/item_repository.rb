@@ -69,5 +69,5 @@ if __FILE__ == $0
   })
 
   ir   = se.items
-  item = ir.find_by_name("Item Repellat Dolorum") # => <Item>
+  item = ir.find_by_name("Item Repellat Dolorum")
 end

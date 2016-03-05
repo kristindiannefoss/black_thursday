@@ -7,9 +7,10 @@ class SalesEngineTest < Minitest::Test
   def setup
     @empty_engine = SalesEngine.new
     @se = SalesEngine.from_csv({
-      :items     => "./test/test_data/items_stub.csv",
-      :merchants => "./test/test_data/merchants_stub.csv",
-      :invoices  => "./test/test_data/invoices_stub.csv"
+      :items         => "./test/test_data/items_stub.csv",
+      :merchants     => "./test/test_data/merchants_stub.csv",
+      :invoices      => "./test/test_data/invoices_stub.csv",
+      :invoice_items => "./test/test_data/invoice_items_stub.csv"
     })
   end
 
@@ -41,8 +42,8 @@ class SalesEngineTest < Minitest::Test
     items_location = "./test/test_data/items_stub.csv"
     merchants_location = "./test/test_data/merchants_stub.csv"
     invoices_location = "./test/test_data/invoices_stub.csv"
-    args = {items: items_location, merchants: merchants_location, invoices: invoices_location}
-
+    invoice_item_location = "./test/test_data/invoice_items_stub.csv"
+    args = {items: items_location, merchants: merchants_location, invoices: invoices_location, invoice_items: invoice_item_location}
 
     items_array, merchants_array =
     SalesEngine.read_all_csv(args)
@@ -80,8 +81,7 @@ class SalesEngineTest < Minitest::Test
     assert_equal [invoice1, invoice2], merchant.invoices
   end
 
-
-  def test_it_can_find_a_merchants_invoices
+  def test_it_returns_an_empty_array_when_a_merchant_has_no_invoices
     merchant = @se.merchants.find_by_id(12334105)
 
     assert_equal [], merchant.invoices
@@ -92,5 +92,4 @@ class SalesEngineTest < Minitest::Test
 
     assert_equal @se.merchants.find_by_id(10), invoice.merchant
   end
-
 end

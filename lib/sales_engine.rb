@@ -5,6 +5,7 @@ require_relative 'merchant'
 require_relative 'item'
 require_relative 'invoice'
 require_relative 'item_repository'
+require_relative 'invoice_item'
 require_relative 'merchant_repository'
 require_relative 'invoice_repository'
 require_relative 'invoice_item_repository'
@@ -45,17 +46,18 @@ class SalesEngine
     CSV.open(csv_location, headers: true, header_converters: :symbol)
   end
 
-  def self.create_repos(items_array, merchants_array, invoices_array)
+  def self.create_repos(items_array, merchants_array, invoices_array, invoice_items_array)
     [ItemRepository.new(items_array),
       MerchantRepository.new(merchants_array),
-      InvoiceRepository.new(invoices_array)]
+      InvoiceRepository.new(invoices_array),
+      InvoiceItemRepository.new(invoice_items_array)]
   end
 
   def self.inject_repositories(merchants_repo, items_repo, invoices_repo, invoice_items_repo)
     inject_merchants_repo(merchants_repo, items_repo, invoices_repo)
     inject_items_repo(items_repo, merchants_repo)
-    inject_invoices_repo(invoices_repo, merchants_repo)
-    inject_invoice_items_repo(invoice_items_repo, items_repo, invoices_repo)
+    inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo)
+    # inject_invoice_items_repo(invoice_items_repo, items_repo, invoices_repo)
   end
 
   def self.inject_merchants_repo(merchants_repo, items_repo, invoices_repo)
@@ -71,16 +73,10 @@ class SalesEngine
     end
   end
 
-  def self.inject_invoices_repo(invoices_repo, merchants_repo)
+  def self.inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo)
     invoices_repo.all.each do |invoice|
       invoice.merchant = merchants_repo.find_by_id(invoice.merchant_id)
-    end
-  end
-
-  def self.inject_invoice_items_repo(invoice_items_repo, items_repo, invoices_repo)
-    invoice_items_repo.all.each do |invoice_item|
-      invoice_item.items = items_repo.find_all_by_invoice_item_id(invoice_item.id)
-      invoice_item.invoices = invoices_repo.find_all_by_invoice_item_id(invoice_item.id)
+      invoice.items    = invoice_items_repo.find_all_by_invoice_id(invoice.id)
     end
   end
 end

@@ -129,7 +129,6 @@ class SalesAnalyst
 
   def invoice_status(status)
     ((@sales_engine.invoices.count_by_status[status].to_f / @sales_engine.invoices.count) * 100).round(2)
-
   end
 
 end
