@@ -1,4 +1,5 @@
 require 'pry'
+require 'time'
 
 class SalesAnalyst
   attr_reader :sales_engine
@@ -59,6 +60,76 @@ class SalesAnalyst
     @sales_engine.items.all.select do |item|
       item.unit_price > min_price
     end
+  end
+
+  def average_invoices_per_merchant
+    (sales_engine.invoices.count.to_f / sales_engine.merchants.count).round(2)
+  end
+
+  def average_invoices_per_merchant_standard_deviation
+    av_in = average_invoices_per_merchant
+
+    Math.sqrt(@sales_engine.merchants.all.map do |merchant|
+      ((merchant.invoices.count) - av_in)**2
+    end.reduce(:+)/@sales_engine.merchants.count).round(2)
+  end
+
+  def top_merchants_by_invoice_count
+    minimum_count = average_invoices_per_merchant + (average_invoices_per_merchant_standard_deviation * 2)
+
+    @sales_engine.merchants.all.select do |merchant|
+      merchant.invoices.count > minimum_count
+    end
+  end
+
+  def bottom_merchants_by_invoice_count
+    maximum_count = average_invoices_per_merchant - (average_invoices_per_merchant_standard_deviation * 2)
+
+    @sales_engine.merchants.all.select do |merchant|
+      merchant.invoices.count < maximum_count
+    end
+  end
+
+  def average_invoices_per_day
+    (sales_engine.invoices.count.to_f / 7).round(2)
+  end
+
+  def invoice_count_by_day
+    invoices_by_date = @sales_engine.invoices.all.group_by do |invoice|
+      invoice.created_at.strftime("%A")
+    end
+
+    hash_count = []
+    invoices_by_date.each_pair do |key, value|
+      hash_count << [key, value.count]
+    end
+    hash_count
+  end
+
+  def average_invoices_per_day_standard_deviation
+    av_in = average_invoices_per_day
+    invoices_by_day = invoice_count_by_day
+
+    Math.sqrt(invoices_by_day.map do |day, invoices|
+      (invoices - av_in)**2
+    end.reduce(:+)/6).round(2)
+  end
+
+  def top_days_by_invoice_count
+    minimum_count = average_invoices_per_day + (average_invoices_per_day_standard_deviation)
+
+    high_sales_days = invoice_count_by_day.select do |day, count|
+      count > minimum_count
+    end
+
+    high_sales_days.map do |days, count|
+      days
+    end
+  end
+
+  def invoice_status(status)
+    ((@sales_engine.invoices.count_by_status[status].to_f / @sales_engine.invoices.count) * 100).round(2)
+
   end
 
 end

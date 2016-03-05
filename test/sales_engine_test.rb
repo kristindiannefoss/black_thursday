@@ -8,7 +8,8 @@ class SalesEngineTest < Minitest::Test
     @empty_engine = SalesEngine.new
     @se = SalesEngine.from_csv({
       :items     => "./test/test_data/items_stub.csv",
-      :merchants => "./test/test_data/merchants_stub.csv"
+      :merchants => "./test/test_data/merchants_stub.csv",
+      :invoices  => "./test/test_data/invoices_stub.csv"
     })
   end
 
@@ -39,7 +40,8 @@ class SalesEngineTest < Minitest::Test
   def test_it_can_build_objects_from_csv_files
     items_location = "./test/test_data/items_stub.csv"
     merchants_location = "./test/test_data/merchants_stub.csv"
-    args = {items: items_location, merchants: merchants_location}
+    invoices_location = "./test/test_data/invoices_stub.csv"
+    args = {items: items_location, merchants: merchants_location, invoices: invoices_location}
 
 
     items_array, merchants_array =
@@ -68,6 +70,27 @@ class SalesEngineTest < Minitest::Test
     actual = item.merchant
 
     assert_equal 10, actual.id
+  end
+
+  def test_it_can_find_a_merchants_invoices
+    merchant = @se.merchants.find_by_id(10)
+    invoice1 = @se.invoices.find_by_id(319)
+    invoice2 = @se.invoices.find_by_id(320)
+
+    assert_equal [invoice1, invoice2], merchant.invoices
+  end
+
+
+  def test_it_can_find_a_merchants_invoices
+    merchant = @se.merchants.find_by_id(12334105)
+
+    assert_equal [], merchant.invoices
+  end
+
+  def test_it_can_find_an_invoices_merchant
+    invoice = @se.invoices.find_by_id(320)
+
+    assert_equal @se.merchants.find_by_id(10), invoice.merchant
   end
 
 end
