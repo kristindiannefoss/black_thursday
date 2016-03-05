@@ -7,9 +7,10 @@ class SalesEngineTest < Minitest::Test
   def setup
     @empty_engine = SalesEngine.new
     @se = SalesEngine.from_csv({
-      :items     => "./test/test_data/items_stub.csv",
-      :merchants => "./test/test_data/merchants_stub.csv",
-      :invoices  => "./test/test_data/invoices_stub.csv"
+      :items        => "./test/test_data/items_stub.csv",
+      :merchants    => "./test/test_data/merchants_stub.csv",
+      :invoices     => "./test/test_data/invoices_stub.csv",
+      :transactions => "./test/test_data/transactions_stub.csv"
     })
   end
 
@@ -41,7 +42,8 @@ class SalesEngineTest < Minitest::Test
     items_location = "./test/test_data/items_stub.csv"
     merchants_location = "./test/test_data/merchants_stub.csv"
     invoices_location = "./test/test_data/invoices_stub.csv"
-    args = {items: items_location, merchants: merchants_location, invoices: invoices_location}
+    transactions_location = "./test/test_data/transactions_stub.csv"
+    args = {items: items_location, merchants: merchants_location, invoices: invoices_location, transactions: transactions_location}
 
 
     items_array, merchants_array =

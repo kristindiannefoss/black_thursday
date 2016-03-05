@@ -31,9 +31,9 @@ class TransactionRepositoryTest < Minitest::Test
   end
 
   def test_it_can_find_all_by_credit_card_number
-    assert_equal [], tr.find_all_by_credit_card_number("1")
-    assert_equal 3, tr.find_all_by_credit_card_number("4575593485193657").length
-    assert_kind_of Transaction, tr.find_all_by_credit_card_number("4575593485193657")[0]
+    assert_equal [], tr.find_all_by_credit_card_number(1)
+    assert_equal 3, tr.find_all_by_credit_card_number(4575593485193657).length
+    assert_kind_of Transaction, tr.find_all_by_credit_card_number(4575593485193657)[0]
   end
 
   def test_it_can_find_all_by_result

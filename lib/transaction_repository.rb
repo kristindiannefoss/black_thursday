@@ -38,4 +38,8 @@ class TransactionRepository
     transactions.select { |trans| result == trans.result}
   end
 
+  def inspect
+    "#<#{self.class} #{@merchants.size} rows>"
+  end
+
 end
