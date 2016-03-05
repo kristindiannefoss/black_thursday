@@ -11,6 +11,8 @@ class InvoiceItemRepository
     invoice_items
   end
 
+  ir.from_csv("./data/invoice_items.csv")
+  
   def find_by_id(id)
     invoice_items.detect { |invoice_item_object| invoice_item_object.id == id }
   end
