@@ -29,7 +29,7 @@ class SalesEngine
   def self.from_csv(args)
     items_array, merchants_array, invoices_array, invoice_items_array, transactions_array, customers_array = read_all_csv(args)
     items_repo, merchants_repo, invoices_repo, invoice_items_repo, transactions_repo, customers_repo = create_repos(items_array, merchants_array, invoices_array, invoice_items_array, transactions_array, customers_array)
-    inject_repositories(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo)
+    inject_repositories(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo, customers_repo)
 
     SalesEngine.new(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo, customers_repo)
   end
@@ -63,10 +63,10 @@ class SalesEngine
       CustomerRepository.new(customers_array)]
   end
 
-  def self.inject_repositories(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo)
+  def self.inject_repositories(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo, customer_repo)
     inject_merchants_repo(merchants_repo, items_repo, invoices_repo)
     inject_items_repo(items_repo, merchants_repo)
-    inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo, items_repo, transactions_repo)
+    inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo, items_repo, transactions_repo, customer_repo)
     inject_transactions_repo(transactions_repo, invoices_repo)
   end
 
@@ -83,12 +83,12 @@ class SalesEngine
     end
   end
 
-  def self.inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo, items_repo, transaction_repo)
+  def self.inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo, items_repo, transaction_repo, customer_repo)
     invoices_repo.all.each do |invoice|
       invoice.merchant    = inject_invoice_merchants(invoice, merchants_repo)
       invoice.items       = inject_invoice_items(invoice_items_repo, invoice, items_repo)
-      invoice.transaction = inject_invoice_transaction(invoice, transaction_repo)
-      # invoice.customer    = inject_invoice_customer()
+      invoice.transactions = inject_invoice_transactions(invoice, transaction_repo)
+      invoice.customer    = inject_invoice_customer(invoice, customer_repo)
     end
   end
 
@@ -105,15 +105,13 @@ class SalesEngine
     end
   end
 
-  def self.inject_invoice_transaction(invoice, transactions_repo)
-    transaction = transactions_repo.all.select do |transaction|
-      transaction.invoice_id == invoice.id
-    end
+  def self.inject_invoice_transactions(invoice, transactions_repo)
+    transactions_repo.find_all_by_invoice_id(invoice.id)
   end
 
-  # def self.inject_invoice_customer
-  #
-  # end
+  def self.inject_invoice_customer(invoice, customer_repo)
+    customer_repo.find_by_id(invoice.customer_id)
+  end
 
   def self.inject_transactions_repo(transactions_repo, invoices_repo)
     transactions_repo.all.each do |transaction|
