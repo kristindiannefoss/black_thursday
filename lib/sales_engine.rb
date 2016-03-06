@@ -28,10 +28,10 @@ class SalesEngine
 
   def self.from_csv(args)
     items_array, merchants_array, invoices_array, invoice_items_array, transactions_array, customers_array = read_all_csv(args)
-    items_repo, merchants_repo, invoices_repo, invoice_items_repo, transactions_repo, customers_repo = create_repos(items_array, merchants_array, invoices_array, invoice_items_array, transactions_array, customers_array)
-    inject_repositories(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo, customers_repo)
+    items_repo, merchants_repo, invoices_repo, invoice_items_repo, transactions_repo, customer_repo = create_repos(items_array, merchants_array, invoices_array, invoice_items_array, transactions_array, customers_array)
+    inject_repositories(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo, customer_repo)
 
-    SalesEngine.new(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo, customers_repo)
+    SalesEngine.new(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo, customer_repo)
   end
 
   def self.read_all_csv(args)
@@ -68,12 +68,23 @@ class SalesEngine
     inject_items_repo(items_repo, merchants_repo)
     inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo, items_repo, transactions_repo, customer_repo)
     inject_transactions_repo(transactions_repo, invoices_repo)
+    inject_merchant_customers(merchants_repo, invoices_repo, customer_repo)
   end
 
   def self.inject_merchants_repo(merchants_repo, items_repo, invoices_repo)
     merchants_repo.all.each do |merchant|
-      merchant.items = items_repo.find_all_by_merchant_id(merchant.id)
-      merchant.invoices = invoices_repo.find_all_by_merchant_id(merchant.id)
+      merchant.items     = items_repo.find_all_by_merchant_id(merchant.id)
+      merchant.invoices  = invoices_repo.find_all_by_merchant_id(merchant.id)
+    end
+  end
+
+  def self.inject_merchant_customers(merchants_repo, invoices_repo, customer_repo)
+    merchants_repo.all.each do |merchant|
+      merchant_invoices = invoices_repo.find_all_by_merchant_id(merchant.id)
+
+      merchant.customers = merchant_invoices.map do |invoice|
+        customer_repo.find_by_id(invoice.customer_id)
+      end.uniq
     end
   end
 
