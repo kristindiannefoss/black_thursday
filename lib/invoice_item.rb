@@ -5,6 +5,7 @@ require 'time'
 class InvoiceItem
   # attr_accessor :item, :invoice
   attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at, :updated_at
+  attr_accessor :repository
 
   def initialize(args)
     @id            = args[:id].to_i
@@ -14,6 +15,7 @@ class InvoiceItem
     @unit_price    = BigDecimal.new(args[:unit_price], 4)/100
     @created_at    = Time.parse(args[:created_at])
     @updated_at    = Time.parse(args[:updated_at])
+    @repository     = nil
   end
 
   def unit_price_to_dollars

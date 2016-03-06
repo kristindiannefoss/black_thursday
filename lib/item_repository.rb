@@ -1,9 +1,11 @@
 require 'pry'
 
 class ItemRepository
-  attr_reader :items
-  def initialize(items = [])
-    @items = items
+  attr_reader :items, :sales_engine
+
+  def initialize(items = [], sales_engine)
+    @items        = items
+    @sales_engine = sales_engine
   end
 
   def all

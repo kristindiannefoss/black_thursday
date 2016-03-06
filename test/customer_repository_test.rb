@@ -2,9 +2,10 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require_relative '../lib/customer_repository'
 require_relative '../lib/customer'
+require_relative '../lib/sales_engine'
 
 class CustomerRepositoryTest < Minitest::Test
-  attr_reader :customers, :customer1, :customer2, :customer3, :customer4, :customer5
+  attr_reader :customers, :customer1, :customer2, :customer3, :customer4, :customer5, :se
 
   def setup
     @customer1 = Customer.new({id: 1, first_name: "Joey", last_name: "Ondricka", created_at: "2012-03-27 14:54:09 UTC", updated_at: "2012-03-27 14:54:09 UTC"})
@@ -19,7 +20,9 @@ class CustomerRepositoryTest < Minitest::Test
 
     @customers  = [customer1, customer2, customer3, customer4, customer5]
 
-    @cr = CustomerRepository.new(customers)
+    @se = SalesEngine.new
+
+    @cr = CustomerRepository.new(customers, se)
   end
 
   def test_it_can_be_created_with_new

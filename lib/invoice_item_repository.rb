@@ -1,10 +1,11 @@
 require 'pry'
 
 class InvoiceItemRepository
-  attr_reader :invoice_items
+  attr_reader :invoice_items, :sales_engine
 
-  def initialize(invoice_items= [])
+  def initialize(invoice_items = [], sales_engine)
     @invoice_items = invoice_items
+    @sales_engine  = sales_engine
   end
 
   def all

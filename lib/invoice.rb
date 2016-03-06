@@ -3,7 +3,7 @@ require 'time'
 
 
 class Invoice
-  attr_accessor :merchant, :items, :transactions, :customer
+  attr_accessor :repository
   attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
 
   def initialize(args)
@@ -13,9 +13,6 @@ class Invoice
     @status        = args[:status].to_sym
     @created_at    = Time.parse(args[:created_at])
     @updated_at    = Time.parse(args[:updated_at])
-    @merchant      = nil
-    @items         = nil
-    @transactions  = nil
-    @customer      = nil
+    @repository     = nil
   end
 end

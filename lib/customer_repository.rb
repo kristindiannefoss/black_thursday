@@ -2,10 +2,11 @@
 require 'pry'
 
 class CustomerRepository
-  attr_reader :customers
+  attr_reader :customers, :sales_engine
 
-  def initialize(customers = [])
-    @customers = customers
+  def initialize(customers = [], sales_engine)
+    @customers    = customers
+    @sales_engine = sales_engine
   end
 
   def all

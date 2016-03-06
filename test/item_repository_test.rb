@@ -2,9 +2,10 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require_relative '../lib/item_repository'
 require_relative '../lib/item'
+require_relative '../lib/sales_engine'
 
 class ItemRepositoryTest < Minitest::Test
-  attr_reader :items, :item1, :item2, :item3
+  attr_reader :items, :item1, :item2, :item3, :se
   def setup
     @item1 = Item.new({id: 263397785, name: "La prière", description: "Some long description", unit_price: 65000, merchant_id: 12334195, created_at: "2016-01-11 11:30:34 UTC", updated_at: "1987-05-07 03:18:42 UTC"})
 
@@ -13,8 +14,9 @@ class ItemRepositoryTest < Minitest::Test
     @item3 = Item.new({id: 263397846, name: "Crafty thing", description: "Super crafty you should buy this", unit_price: 65000, merchant_id: 12334257, created_at: "2016-01-11 11:44:00 UTC", updated_at: "2006-08-26 06:56:21 UTC"})
 
     @items  = [item1, item2, item3]
+    @se     = SalesEngine.new
 
-    @ir = ItemRepository.new(items)
+    @ir = ItemRepository.new(items, se)
   end
 
   def test_it_can_be_created_with_new

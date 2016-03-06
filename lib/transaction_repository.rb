@@ -2,10 +2,11 @@ require_relative 'transaction'
 require 'csv'
 
 class TransactionRepository
-  attr_reader :transactions
+  attr_reader :transactions, :sales_engine
 
-  def initialize(transactions = [])
+  def initialize(transactions = [], sales_engine = nil)
     @transactions = transactions
+    @sales_engine = sales_engine
   end
 
   def from_csv(csv_location)

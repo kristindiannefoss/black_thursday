@@ -3,10 +3,12 @@ require 'minitest/pride'
 require 'bigdecimal'
 require_relative '../lib/invoice_item_repository'
 require_relative '../lib/invoice_item'
+require_relative '../lib/sales_engine'
 
 class InvoiceItemRepositoryTest < Minitest::Test
 
-  attr_reader :invoice_item1, :invoice_item2, :invoice_item3
+  attr_reader :invoice_item1, :invoice_item2, :invoice_item3, :se
+  
   def setup
       @invoice_item1 = InvoiceItem.new({id: 2,item_id: 263454779,invoice_id: 1,quantity: 9,unit_price: 23324, created_at: "2012-03-27 14:54:09 UTC",updated_at: "2012-03-27 14:54:09 UTC"})
       @invoice_item2 = InvoiceItem.new({id: 3,item_id: 263451719,invoice_id: 1,quantity: 8,unit_price:34873, created_at: "2012-03-27 14:54:09 UTC",updated_at: "2012-03-27 14:54:09 UTC"})
@@ -14,8 +16,9 @@ class InvoiceItemRepositoryTest < Minitest::Test
       @invoice_item4 = InvoiceItem.new({id: 5,item_id: 263542298,invoice_id: 3,quantity: 4,unit_price: 2196,created_at: "2012-03-27 14:54:09 UTC",updated_at: "2012-03-27 14:54:09 UTC"})
 
     @invoice_items = [invoice_item1, invoice_item2, invoice_item3, invoice_item3]
+    @se            = SalesEngine.new
 
-    @iir = InvoiceItemRepository.new(@invoice_items)
+    @iir = InvoiceItemRepository.new(@invoice_items, se)
   end
 
   def test_an_instance_of_invoice_item_repository_can_be_created
