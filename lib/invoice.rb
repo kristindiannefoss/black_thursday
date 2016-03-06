@@ -3,7 +3,7 @@ require 'time'
 
 
 class Invoice
-  attr_accessor :merchant, :items
+  attr_accessor :merchant, :items, :transaction
   attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at
 
   def initialize(args)
@@ -15,5 +15,6 @@ class Invoice
     @updated_at    = Time.parse(args[:updated_at])
     @merchant      = nil
     @items         = nil
+    @transaction   = nil
   end
 end

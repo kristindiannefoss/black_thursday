@@ -11,7 +11,8 @@ class SalesEngineTest < Minitest::Test
       :merchants     => "./test/test_data/merchants_stub.csv",
       :invoices      => "./test/test_data/invoices_stub.csv",
       :invoice_items => "./test/test_data/invoice_items_stub.csv",
-      :transactions => "./test/test_data/transactions_stub.csv"
+      :transactions  => "./test/test_data/transactions_stub.csv",
+      :customers     => "./test/test_data/customers_stub.csv"
     })
   end
 
@@ -40,12 +41,13 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_build_objects_from_csv_files
-    items_location = "./test/test_data/items_stub.csv"
-    merchants_location = "./test/test_data/merchants_stub.csv"
-    invoices_location = "./test/test_data/invoices_stub.csv"
+    items_location        = "./test/test_data/items_stub.csv"
+    merchants_location    = "./test/test_data/merchants_stub.csv"
+    invoices_location     = "./test/test_data/invoices_stub.csv"
     invoice_item_location = "./test/test_data/invoice_items_stub.csv"
     transactions_location = "./test/test_data/transactions_stub.csv"
-    args = {items: items_location, merchants: merchants_location, invoices: invoices_location, invoice_items: invoice_item_location, transactions: transactions_location}
+    customers_location    = "./test/test_data/customers_stub.csv"
+    args = {items: items_location, merchants: merchants_location, invoices: invoices_location, invoice_items: invoice_item_location, transactions: transactions_location, customers: customers_location}
 
     items_array, merchants_array =
     SalesEngine.read_all_csv(args)
@@ -94,4 +96,23 @@ class SalesEngineTest < Minitest::Test
 
     assert_equal @se.merchants.find_by_id(10), invoice.merchant
   end
+
+  def test_it_can_find_an_invoices_items
+    skip
+    invoice = @se.invoices.find_by_id(20)
+    invoice.items # => [item, item, item]
+  end
+
+  def test_it_can_find_an_invoices_transactions
+    skip
+    # invoice = @se.invoices.find_by_id(20)
+    # invoice.transactions # => [transaction, transaction]
+  end
+
+  def test_it_can_find_an_invoices_customer
+    skip
+    # invoice = @se.invoices.find_by_id(20)
+    # invoice.customer # => customer
+  end
+
 end
