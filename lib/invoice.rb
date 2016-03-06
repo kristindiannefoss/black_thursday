@@ -18,4 +18,9 @@ class Invoice
     @transactions  = nil
     @customer      = nil
   end
+
+  def inspect
+    "#<#{self.class}>"
+  end
+
 end

@@ -22,4 +22,8 @@ class Transaction
     @invoice                     = nil
   end
 
+  def inspect
+    "#<#{self.class}>"
+  end
+
 end

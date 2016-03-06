@@ -12,4 +12,9 @@ class Merchant
     @invoices  = nil
     @customers = nil
   end
+
+  def inspect
+    "#<#{self.class}>"
+  end
+
 end
