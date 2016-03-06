@@ -66,7 +66,7 @@ class SalesEngine
   def self.inject_repositories(merchants_repo, items_repo, invoices_repo, invoice_items_repo, transactions_repo)
     inject_merchants_repo(merchants_repo, items_repo, invoices_repo)
     inject_items_repo(items_repo, merchants_repo)
-    inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo)
+    inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo, items_repo, transactions_repo)
     inject_transactions_repo(transactions_repo, invoices_repo)
   end
 
@@ -83,12 +83,37 @@ class SalesEngine
     end
   end
 
-  def self.inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo)
+  def self.inject_invoices_repo(invoices_repo, merchants_repo, invoice_items_repo, items_repo, transaction_repo)
     invoices_repo.all.each do |invoice|
-      invoice.merchant = merchants_repo.find_by_id(invoice.merchant_id)
-      invoice.items    = invoice_items_repo.find_all_by_invoice_id(invoice.id)
+      invoice.merchant    = inject_invoice_merchants(invoice, merchants_repo)
+      invoice.items       = inject_invoice_items(invoice_items_repo, invoice, items_repo)
+      invoice.transaction = inject_invoice_transaction(invoice, transaction_repo)
+      # invoice.customer    = inject_invoice_customer()
     end
   end
+
+  def self.inject_invoice_merchants(invoice, merchants_repo)
+    merchants_repo.find_by_id(invoice.merchant_id)
+  end
+
+  def self.inject_invoice_items(invoice_items_repo, invoice, items_repo)
+    invoice_item_ids  = invoice_items_repo.find_all_by_invoice_id(invoice.id).map do |invoice_item|
+      invoice_item.item_id
+    end
+    invoice_item_ids.map do |item_id|
+      items_repo.find_by_id(item_id)
+    end
+  end
+
+  def self.inject_invoice_transaction(invoice, transactions_repo)
+    transaction = transactions_repo.all.select do |transaction|
+      transaction.invoice_id == invoice.id
+    end
+  end
+
+  # def self.inject_invoice_customer
+  #
+  # end
 
   def self.inject_transactions_repo(transactions_repo, invoices_repo)
     transactions_repo.all.each do |transaction|
