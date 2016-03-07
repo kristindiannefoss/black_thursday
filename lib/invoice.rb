@@ -15,4 +15,8 @@ class Invoice
     @updated_at    = Time.parse(args[:updated_at])
     @repository     = nil
   end
+
+  def merchant
+    repository.sales_engine.merchants.find_by_id(merchant_id)
+  end
 end
