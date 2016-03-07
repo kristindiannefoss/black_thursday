@@ -22,4 +22,8 @@ class Transaction
     @repository     = nil
   end
 
+  def invoice
+    repository.sales_engine.invoices.find_by_id(invoice_id)
+  end
+
 end

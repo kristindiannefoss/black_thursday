@@ -78,8 +78,8 @@ class SalesEngineTest < Minitest::Test
 
   def test_it_can_find_an_invoices_items
     skip
-    invoice = @se.invoices.find_by_id(20)
-    invoice.items # => [item, item, item]
+    # invoice = @se.invoices.find_by_id(20)
+    # invoice.items # => [item, item, item]
   end
 
   def test_it_can_find_an_invoices_transactions
@@ -90,8 +90,11 @@ class SalesEngineTest < Minitest::Test
 
   def test_it_can_find_an_invoices_customer
     skip
-    # invoice = @se.invoices.find_by_id(20)
-    # invoice.customer # => customer
+    # invoice  = @se.invoices.find_by_id(20)
+    # customer = invoice.customer
+    #
+    # assert_kind_of Customer, customer
+    # assert_equal 20, customer.id
   end
 
 end
