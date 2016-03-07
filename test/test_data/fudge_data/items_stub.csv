@@ -1,0 +1,6 @@
+id,name,description,unit_price,merchant_id,created_at,updated_at
+1,KrisFoss,cool,5000,10,2016-01-11 13:55:04 UTC,2007-06-17 23:33:33 UTC
+2,SalEspinosa,cooler,10000,10,2016-01-11 13:55:04 UTC,2007-06-17 23:33:33 UTC
+3,Kristhree,cold,10000,29,2016-01-11 13:55:04 UTC,2007-06-17 23:33:33 UTC
+4,KrisFosser,co,5000,10,2016-01-11 13:55:04 UTC,2007-06-17 23:33:33 UTC
+5,ElSalvadorEspinosa,icecold,10000,10,2016-01-11 13:55:04 UTC,2007-06-17 23:33:33 UTC
