@@ -1,10 +1,12 @@
+require 'pry'
 require 'minitest/autorun'
 require 'minitest/pride'
 require_relative '../lib/merchant_repository'
 require_relative '../lib/merchant'
+require_relative '../lib/sales_engine'
 
 class MerchantRepositoryTest < Minitest::Test
-  attr_reader :merchants, :merchant1, :merchant2, :merchant3, :merchant4
+  attr_reader :merchants, :merchant1, :merchant2, :merchant3, :merchant4, :se
 
   def setup
     @merchant1 = Merchant.new({id: 12335099, name: "silvia2knit"})
@@ -14,7 +16,8 @@ class MerchantRepositoryTest < Minitest::Test
 
     @merchants  = [merchant1, merchant2, merchant3, merchant4]
 
-    @mr = MerchantRepository.new(merchants)
+    @se = SalesEngine.new
+    @mr = MerchantRepository.new(merchants, se)
   end
 
   def test_it_can_be_created_with_new
@@ -50,6 +53,4 @@ class MerchantRepositoryTest < Minitest::Test
     expected = []
     assert_equal expected, @mr.find_all_by_name("fail")
   end
-
-
 end

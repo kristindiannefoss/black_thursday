@@ -4,9 +4,10 @@ require 'minitest/pride'
 # require_relative '../lib/merchant'
 require_relative '../lib/invoice_repository'
 require_relative '../lib/invoice'
+require_relative '../lib/sales_engine'
 
 class InvoiceRepositoryTest < Minitest::Test
-  attr_reader :invoice1, :invoice2, :invoice3
+  attr_reader :invoice1, :invoice2, :invoice3, :se
 
 
   def setup
@@ -15,8 +16,9 @@ class InvoiceRepositoryTest < Minitest::Test
     @invoice3 = Invoice.new({id: 3,customer_id: 2,merchant_id: 12334753,status: "pending",created_at: "2009-02-07",updated_at: "2014-03-15"})
 
     @invoices = [invoice1, invoice2, invoice3]
+    @se       = SalesEngine.new
 
-    @ir = InvoiceRepository.new(@invoices)
+    @ir = InvoiceRepository.new(@invoices, se)
   end
 
   def test_an_instance_of_invoice_repository_can_be_created
@@ -58,5 +60,4 @@ class InvoiceRepositoryTest < Minitest::Test
   def test_it_returns_an_empty_array_when_no_status
     assert_equal [], @ir.find_all_by_status("fail")
   end
-
 end

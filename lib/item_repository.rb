@@ -1,9 +1,11 @@
 require 'pry'
 
 class ItemRepository
-  attr_reader :items
-  def initialize(items = [])
-    @items = items
+  attr_reader :items, :sales_engine
+
+  def initialize(items = [], sales_engine)
+    @items        = items
+    @sales_engine = sales_engine
   end
 
   def all
@@ -69,5 +71,5 @@ if __FILE__ == $0
   })
 
   ir   = se.items
-  item = ir.find_by_name("Item Repellat Dolorum") # => <Item>
+  item = ir.find_by_name("Item Repellat Dolorum")
 end

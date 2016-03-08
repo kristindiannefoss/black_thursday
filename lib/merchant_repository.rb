@@ -1,11 +1,11 @@
 require 'pry'
 
 class MerchantRepository
-  attr_reader :merchants
+  attr_reader   :merchants, :sales_engine
 
-  def initialize(merchants = [])
-    @merchants = merchants
-
+  def initialize(merchants = [], sales_engine)
+    @merchants    = merchants
+    @sales_engine = sales_engine
   end
 
   def all

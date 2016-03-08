@@ -4,7 +4,7 @@ require 'time'
 
 class Item
   attr_reader :id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at
-  attr_accessor :merchant
+  attr_accessor :repository
 
   def initialize(args)
     @id          = args[:id].to_i
@@ -14,10 +14,14 @@ class Item
     @merchant_id = args[:merchant_id].to_i
     @created_at  = Time.parse(args[:created_at])
     @updated_at  = Time.parse(args[:updated_at])
-    @merchant    = nil
+    @repository     = nil
   end
 
   def unit_price_to_dollars
     @unit_price
+  end
+
+  def merchant
+    repository.sales_engine.merchants.find_by_id(merchant_id)
   end
 end
