@@ -24,4 +24,10 @@ class Merchant
       invoice.customer
     end.uniq
   end
+
+  def revenue
+    repository.sales_engine.invoices.find_all_by_merchant_id(id).map do |invoice|
+      invoice.total
+    end.reduce(:+)
+  end
 end
