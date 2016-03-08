@@ -137,4 +137,18 @@ class SalesAnalyst
     end.compact.reduce(:+)
   end
 
+  def top_revenue_earners(number_of_earners = 20)
+    merchant_revenue = @sales_engine.merchants.all.map do |merchant|
+      [merchant, merchant.revenue.to_f]
+    end
+
+    sorted_earners = merchant_revenue.sort_by do |merchant, revenue|
+      revenue
+    end.reverse.take(number_of_earners)
+
+    sorted_earners.map do |pair|
+      pair[0]
+    end
+  end
+
 end

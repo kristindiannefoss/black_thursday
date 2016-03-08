@@ -132,4 +132,10 @@ class SalesAnalystTest < Minitest::Test
   def test_it_can_calculate_total_revenue_by_day_for_a_given_day
     assert_equal 2728.45, @sa_synthetic_data.total_revenue_by_date(Time.parse('2016-02-28 20:57:42 UTC'))
   end
+
+  def test_it_can_return_top_revenue_earners
+    assert_kind_of Merchant, @sa_synthetic_data.top_revenue_earners(3)[0]
+    assert_equal 2, @sa_synthetic_data.top_revenue_earners(3)[0].id
+  end
+
 end
