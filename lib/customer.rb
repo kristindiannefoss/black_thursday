@@ -12,4 +12,15 @@ class Customer
     @updated_at  = Time.parse(args[:updated_at])
     @repository  = nil
   end
+
+  def merchants
+    invoices = repository.sales_engine.invoices.find_all_by_customer_id(id)
+    merchant_ids = invoices.map do |invoice|
+      invoice.merchant_id
+    end
+
+    merchant_ids.map do |merchant_id|
+      repository.sales_engine.customers.find_by_id(merchant_id)
+    end
+  end
 end
