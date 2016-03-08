@@ -148,4 +148,15 @@ class SalesAnalystTest < Minitest::Test
     assert_kind_of Merchant, @sa_synthetic_data.merchants_with_only_one_item[0]
   end
 
+  def test_it_can_find_merchants_with_only_one_item_by_month
+    actual = @sa_synthetic_data.merchants_with_only_one_item_registered_in_month("March")
+    assert_kind_of Merchant, actual[0]
+    assert_equal 1, actual.length
+    assert_equal 29, actual[0].id
+  end
+
+  def test_it_can_find_a_merchants_revenue
+    assert_equal 875, @sa_synthetic_data.revenue_by_merchant(1)
+  end
+
 end

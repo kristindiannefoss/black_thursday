@@ -167,6 +167,14 @@ class SalesAnalyst
     end.compact
   end
 
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item.select do |merchant|
+      merchant.created_at.strftime("%B") == month
+    end
+  end
 
+  def revenue_by_merchant(merchant_id)
+    @sales_engine.merchants.find_by_id(merchant_id).revenue
+  end
 
 end

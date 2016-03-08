@@ -3,11 +3,12 @@ require 'pry'
 
 class Merchant
   attr_accessor :repository
-  attr_reader :id, :name
+  attr_reader :id, :name, :created_at
 
   def initialize(args)
     @id         = args[:id].to_i
     @name       = args[:name]
+    @created_at = Time.parse(args[:created_at])
     @repository = nil
   end
 
