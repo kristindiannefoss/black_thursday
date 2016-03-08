@@ -41,7 +41,7 @@ class Invoice
   end
 
   def total
-    return nil if is_paid_in_full? == false
+    return 0 if is_paid_in_full? == false
     repository.sales_engine.invoice_items.find_all_by_invoice_id(id).map do |invoice_item|
       (invoice_item.unit_price * invoice_item.quantity)
     end.reduce(:+)
