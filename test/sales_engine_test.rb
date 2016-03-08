@@ -14,6 +14,15 @@ class SalesEngineTest < Minitest::Test
       :transactions  => "./test/test_data/transactions_stub.csv",
       :customers     => "./test/test_data/customers_stub.csv"
     })
+
+    @se_synthetic_data = SalesEngine.from_csv({
+    :items         => "./test/test_data/fudge_data/items_stub.csv",
+    :merchants     => "./test/test_data/fudge_data/merchants_stub.csv",
+    :invoices      => "./test/test_data/fudge_data/invoices_stub.csv",
+    :invoice_items => "./test/test_data/fudge_data/invoice_items_stub.csv",
+    :transactions  => "./test/test_data/fudge_data/transactions_stub.csv",
+    :customers     => "./test/test_data/fudge_data/customers_stub.csv"
+    })
   end
 
   def test_it_can_be_created_with_new
@@ -77,9 +86,8 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_find_an_invoices_items
-    skip
-    # invoice = @se.invoices.find_by_id(20)
-    # invoice.items # => [item, item, item]
+    invoice = @se_synthetic_data.invoices.find_by_id(1)
+    invoice.items # => [item, item, item]
   end
 
   def test_it_can_find_an_invoices_transactions
