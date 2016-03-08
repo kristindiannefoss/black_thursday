@@ -117,4 +117,8 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 51.61, @sa.invoice_status(:shipped) # => 93.75
     assert_equal 16.13, @sa.invoice_status(:returned) # => 1.00
   end
+
+  def test_it_can_calculate_total_revenue_by_day_for_a_given_day
+    assert_equal 8, @sa.total_revenue_by_date(Time.parse('2016-02-28 20:57:42 UTC'))
+  end
 end

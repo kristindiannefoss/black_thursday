@@ -131,4 +131,11 @@ class SalesAnalyst
     ((@sales_engine.invoices.count_by_status[status].to_f / @sales_engine.invoices.count) * 100).round(2)
   end
 
+  def total_revenue_by_date(date)
+    @sales_engine.invoices.find_all_by_date(date).map do |invoice|
+      # binding.pry
+      invoice.total
+    end.reduce(:+)
+  end
+
 end
