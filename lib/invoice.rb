@@ -46,4 +46,11 @@ class Invoice
       (invoice_item.unit_price * invoice_item.quantity)
     end.reduce(:+)
   end
+
+  def is_pending?
+    transactions.all? do |transaction|
+      transaction.result == "failed"
+    end
+  end
+
 end

@@ -54,6 +54,12 @@ class InvoiceRepository
     end
   end
 
+  def find_all_pending
+    invoices.select do |invoice_object|
+      invoice_object.is_pending?
+    end
+  end
+
   def inspect
   "#<#{self.class} #{@merchants.size} rows>"
 end

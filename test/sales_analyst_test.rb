@@ -138,4 +138,14 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 2, @sa_synthetic_data.top_revenue_earners(3)[0].id
   end
 
+  def test_it_can_find_merchants_with_a_pending
+    assert_kind_of Merchant, @sa_synthetic_data.merchants_with_pending_invoices[0]
+    assert_equal 3, @sa_synthetic_data.merchants_with_pending_invoices[0].id
+    assert_equal 1, @sa_synthetic_data.merchants_with_pending_invoices.count
+  end
+
+  def test_it_can_find_merchants_with_only_one_item
+    assert_kind_of Merchant, @sa_synthetic_data.merchants_with_only_one_item[0]
+  end
+
 end
