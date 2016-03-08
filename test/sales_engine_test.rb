@@ -154,4 +154,18 @@ class SalesEngineTest < Minitest::Test
     assert_equal 2, merchants.count
   end
 
+  def test_it_can_determine_if_an_invoice_has_been_paid_in_full
+    invoice  = @se_synthetic_data.invoices.find_by_id(1)
+
+    assert invoice.is_paid_in_full?
+  end
+
+  def test_it_can_find_the_total_balance_of_an_invoice
+    invoice = @se_synthetic_data.invoices.find_by_id(1)
+    total_balance = invoice.total
+
+    assert_equal 875.0, total_balance
+    assert_kind_of BigDecimal, total_balance
+  end
+
 end
