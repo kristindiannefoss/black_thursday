@@ -15,6 +15,17 @@ class SalesAnalystTest < Minitest::Test
       :customers    => "./test/test_data/customers_stub.csv"
     })
     @sa = SalesAnalyst.new(@se)
+
+    @se_synthetic_data = SalesEngine.from_csv({
+    :items         => "./test/test_data/fudge_data/items_stub.csv",
+    :merchants     => "./test/test_data/fudge_data/merchants_stub.csv",
+    :invoices      => "./test/test_data/fudge_data/invoices_stub.csv",
+    :invoice_items => "./test/test_data/fudge_data/invoice_items_stub.csv",
+    :transactions  => "./test/test_data/fudge_data/transactions_stub.csv",
+    :customers     => "./test/test_data/fudge_data/customers_stub.csv"
+    })
+
+    @sa_synthetic_data = SalesAnalyst.new(@se_synthetic_data)
   end
 
   def test_it_can_be_created_with_new
@@ -119,6 +130,6 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_calculate_total_revenue_by_day_for_a_given_day
-    assert_equal 8, @sa.total_revenue_by_date(Time.parse('2016-02-28 20:57:42 UTC'))
+    assert_equal 2728.45, @sa_synthetic_data.total_revenue_by_date(Time.parse('2016-02-28 20:57:42 UTC'))
   end
 end

@@ -133,9 +133,8 @@ class SalesAnalyst
 
   def total_revenue_by_date(date)
     @sales_engine.invoices.find_all_by_date(date).map do |invoice|
-      # binding.pry
       invoice.total
-    end.reduce(:+)
+    end.compact.reduce(:+)
   end
 
 end
