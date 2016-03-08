@@ -87,22 +87,71 @@ class SalesEngineTest < Minitest::Test
 
   def test_it_can_find_an_invoices_items
     invoice = @se_synthetic_data.invoices.find_by_id(1)
-    invoice.items # => [item, item, item]
+    assert_kind_of Item, invoice.items[0] # => [item, item, item]
+    assert_equal 1, invoice.items[0].id
+    assert_equal 2, invoice.items[1].id
+    assert_equal 2, invoice.items.count
   end
 
   def test_it_can_find_an_invoices_transactions
-    skip
-    # invoice = @se.invoices.find_by_id(20)
-    # invoice.transactions # => [transaction, transaction]
+    invoice = @se_synthetic_data.invoices.find_by_id(1)
+    assert_equal 1, invoice.transactions[0].id
+    assert_equal 2, invoice.transactions[1].id
+    assert_equal 2, invoice.transactions.count
+    assert_equal "failed", invoice.transactions[1].result
+    assert_equal "success", invoice.transactions[0].result
   end
 
   def test_it_can_find_an_invoices_customer
-    skip
-    # invoice  = @se.invoices.find_by_id(20)
-    # customer = invoice.customer
-    #
-    # assert_kind_of Customer, customer
-    # assert_equal 20, customer.id
+    invoice  = @se_synthetic_data.invoices.find_by_id(1)
+    customer = invoice.customer
+
+    assert_kind_of Customer, customer
+    assert_equal 1, customer.id
+  end
+
+  def test_it_can_find_an_invoices_merchant
+    invoice  = @se_synthetic_data.invoices.find_by_id(1)
+    merchant = invoice.merchant
+
+    assert_kind_of Merchant, merchant
+    assert_equal 1, merchant.id
+  end
+
+  def test_it_can_find_a_transactions_invoice
+    transaction = @se_synthetic_data.transactions.find_by_id(5)
+    invoice     = transaction.invoice
+
+    assert_equal 4, invoice.id
+  end
+
+  def test_it_can_find_a_merchants_customers
+    merchant = @se_synthetic_data.merchants.find_by_id(1)
+    customer = merchant.customers
+
+    assert_equal 1, customer[0].id
+
+    merchant = @se_synthetic_data.merchants.find_by_id(3)
+    customers = merchant.customers
+
+    customer_ids = customers.map do |customer|
+      customer.id
+    end
+
+    assert customer_ids.include?(2)
+    assert_equal 3, customers.length
+  end
+
+  def test_it_can_find_a_customers_merchants
+    customer  = @se_synthetic_data.customers.find_by_id(1)
+    merchants = customer.merchants
+
+    merchant_ids = merchants.map do |merchant|
+      merchant.id
+    end
+
+    assert merchant_ids.include?(1)
+    assert_equal 2, merchants.count
   end
 
 end
