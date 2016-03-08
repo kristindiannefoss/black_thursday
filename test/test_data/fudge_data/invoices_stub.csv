@@ -1,0 +1,6 @@
+id,customer_id,merchant_id,status,created_at,updated_at
+1,1,1,returned,2016-02-28,2013-11-02
+2,1,2,shipped,2016-02-28,2007-11-20
+3,2,3,shipped,2016-02-28,2002-03-08
+4,3,3,pending,2016-02-28,2014-04-14
+5,4,3,shipped,2003-07-28,2012-11-13
