@@ -17,21 +17,15 @@ class ItemRepository
   end
 
   def total_price
-    all.map do |item|
-      item.unit_price
-    end.reduce(:+)
+    all.map {|item| item.unit_price}.reduce(:+)
   end
 
   def find_by_id(id)
-    items.detect do |item_object|
-      item_object.id == id
-    end
+    items.detect {|item_object| item_object.id == id}
   end
 
   def find_by_name(name)
-    items.detect do |item_object|
-      item_object.name.downcase == name.downcase
-    end
+    items.detect {|item_object| item_object.name.downcase == name.downcase}
   end
 
   def find_all_with_description(description_fragment)
@@ -41,9 +35,7 @@ class ItemRepository
   end
 
   def find_all_by_price(price)
-    items.select do |item_object|
-      item_object.unit_price == price
-    end
+    items.select {|item_object| item_object.unit_price == price}
   end
 
   def find_all_by_price_in_range(range)
@@ -53,9 +45,7 @@ class ItemRepository
   end
 
   def find_all_by_merchant_id(merchant_id)
-    items.select do |item_object|
-      item_object.merchant_id == merchant_id
-    end
+    items.select {|item_object| item_object.merchant_id == merchant_id}
   end
 
   def inspect

@@ -21,9 +21,7 @@ class ObjectMaker
   end
 
   def make_objs(location, class_type)
-    read_one_csv(location).map do |item|
-      class_type.new(item)
-    end
+    read_one_csv(location).map {|item| class_type.new(item)}
   end
 
   def read_one_csv(csv_location)
@@ -31,9 +29,7 @@ class ObjectMaker
   end
 
   def inject_objects(repos)
-    repos.each do |repo|
-      repo.all.each {|object| object.repository = repo }
-    end
+    repos.each {|repo| repo.all.each {|object| object.repository = repo }}
   end
 
 end

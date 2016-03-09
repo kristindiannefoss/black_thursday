@@ -21,15 +21,11 @@ class Merchant
   end
 
   def customers
-    invoices.map do |invoice|
-      invoice.customer
-    end.uniq
+    invoices.map {|invoice| invoice.customer}.uniq
   end
 
   def revenue
     merchant_inv = repository.sales_engine.invoices.find_all_by_merchant_id(id)
-    merchant_inv.map do |invoice|
-      invoice.total
-    end.reduce(:+)
+    merchant_inv.map {|invoice| invoice.total}.reduce(:+)
   end
 end
