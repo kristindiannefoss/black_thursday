@@ -178,38 +178,26 @@ class SalesAnalyst
   end
 
   def most_sold_item_for_merchant(merchant_id)
-    # @sales_engine.invoices.find_all_by_merchant_id(merchant_id).map do |invoice|
-    #   @sales_engine.invoice_item.find_all_by_invoice_id(invoice.id)each do |invoice_item|
+    merchant_invoices = @sales_engine.invoices.find_all_by_merchant_id(merchant_id)
 
-    successful_transactions = @sales_engine.transactions.find_all_by_result("success")
-
-    successful_invoice_ids = successful_transactions.map do |transaction|
-      transaction.invoice_id
+    successful_invoices = merchant_invoices.select do |invoice|
+      invoice.is_paid_in_full?
     end
 
-    successful_invoices = successful_invoice_ids.map do |invoice_id|
-      @sales_engine.invoices.find_by_id(invoice_id)
+    merchant_invoice_items = successful_invoices.map do |merchant_invoice|
+      @sales_engine.invoice_items.find_all_by_invoice_id(merchant_invoice.id)
+    end.flatten
+
+    max_count = merchant_invoice_items.max_by do |invoice_item|
+      invoice_item.quantity
+    end.quantity
+
+    top_invoice_items = merchant_invoice_items.select do |invoice_item|
+      invoice_item.quantity == max_count
     end
 
-    merchants_successful_invoices = successful_invoices.select do |invoice|
-      invoice.merchant_id == merchant_id
-    end
-
-    items_and_counts = Hash.new(0)
-    merchants_successful_invoices.each do |invoice|
-      invoice.items_and_counts.each do |item, count|
-        items_and_counts[item] += count
-      end
-    end
-
-    sorted_items_and_counts = items_and_counts.to_a.sort_by do |pair|
-      pair[1]
-    end
-
-    sorted_items_and_counts.map do |items_and_counts|
-      items_and_counts[0]
+    top_invoice_items.map do |invoice_item|
+      @sales_engine.items.find_by_id(invoice_item.item_id)
     end
   end
-
-
 end

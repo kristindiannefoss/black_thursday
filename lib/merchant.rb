@@ -1,5 +1,5 @@
 require 'pry'
-
+require 'time'
 
 class Merchant
   attr_accessor :repository
