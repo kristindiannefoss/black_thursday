@@ -21,7 +21,8 @@ class Invoice
   end
 
   def items
-    repository.sales_engine.invoice_items.find_all_by_invoice_id(id).map do |invoice_item|
+    inv_ids = repository.sales_engine.invoice_items.find_all_by_invoice_id(id)
+    inv_ids.map do |invoice_item|
       repository.sales_engine.items.find_by_id(invoice_item.item_id)
     end
   end
@@ -42,7 +43,8 @@ class Invoice
 
   def total
     return 0 if is_paid_in_full? == false
-    repository.sales_engine.invoice_items.find_all_by_invoice_id(id).map do |invoice_item|
+    inv_ids = repository.sales_engine.invoice_items.find_all_by_invoice_id(id)
+    inv_ids.map do |invoice_item|
       (invoice_item.unit_price * invoice_item.quantity)
     end.reduce(:+)
   end
@@ -56,9 +58,9 @@ class Invoice
   def items_and_counts
     items_and_counts = Hash.new(0)
     items.each do |item|
-      invoice_items = repository.sales_engine.invoice_items.find_all_by_invoice_id(id)
+      in_itms = repository.sales_engine.invoice_items.find_all_by_invoice_id(id)
 
-      invoice_items.each do |invoice_item|
+      in_itms.each do |invoice_item|
         items_and_counts[invoice_item.item] += invoice_item.quantity
       end
     end
