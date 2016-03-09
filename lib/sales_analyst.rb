@@ -202,14 +202,21 @@ class SalesAnalyst
       end
     end
 
-    sorted_items_and_counts = items_and_counts.to_a.sort_by do |pair|
-      pair[1]
+    # binding.pry
+
+    max_count = items_and_counts.max_by { |pair| pair[1] }[1]
+
+    max_items = items_and_counts.select do |key, value|
+      value == max_count
+    end
+    #
+    # binding.pry
+
+    max_items.map do |items_and_counts|
+      @sales_engine.items.find_by_id(items_and_counts[0])
     end
 
-    sorted_items_and_counts.map do |items_and_counts|
-      items_and_counts[0]
-    end
-
+    binding.pry
 
     # invoice_items.item_id.group_by do |item_id|
     #
