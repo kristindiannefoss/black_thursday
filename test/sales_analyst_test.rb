@@ -180,8 +180,10 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_return_the_best_item_for_a_merchant_in_terms_of_revenue
-    skip
-    @sa.best_item_for_merchant(merchant_id)
+    actual = @sa_actual.best_item_for_merchant(12334145)
+
+    assert_kind_of Item, actual
+    assert_equal 263412097, actual.id
     #=> item (in terms of revenue generated)
   end
 
