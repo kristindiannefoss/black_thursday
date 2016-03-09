@@ -26,6 +26,18 @@ class SalesAnalystTest < Minitest::Test
     })
 
     @sa_synthetic_data = SalesAnalyst.new(@se_synthetic_data)
+
+    @se_actual = SalesEngine.from_csv({
+    :items         => "./data/items.csv",
+    :merchants     => "./data/merchants.csv",
+    :invoices      => "./data/invoices.csv",
+    :invoice_items => "./data/invoice_items.csv",
+    :transactions  => "./data/transactions.csv",
+    :customers     => "./data/customers.csv"
+    })
+
+    @sa_actual = SalesAnalyst.new(@se_actual)
+
   end
 
   def test_it_can_be_created_with_new
@@ -139,24 +151,38 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_find_merchants_with_a_pending
-    assert_kind_of Merchant, @sa_synthetic_data.merchants_with_pending_invoices[0]
-    assert_equal 3, @sa_synthetic_data.merchants_with_pending_invoices[0].id
-    assert_equal 1, @sa_synthetic_data.merchants_with_pending_invoices.count
+    assert_kind_of Merchant, @sa_actual.merchants_with_pending_invoices[0]
+    assert_equal 12335955, @sa_actual.merchants_with_pending_invoices[0].id
+    assert_equal 467, @sa_actual.merchants_with_pending_invoices.count
   end
 
   def test_it_can_find_merchants_with_only_one_item
-    assert_kind_of Merchant, @sa_synthetic_data.merchants_with_only_one_item[0]
+    assert_kind_of Merchant, @sa_actual.merchants_with_only_one_item[0]
   end
 
   def test_it_can_find_merchants_with_only_one_item_by_month
-    actual = @sa_synthetic_data.merchants_with_only_one_item_registered_in_month("March")
+    actual = @sa_actual.merchants_with_only_one_item_registered_in_month("March")
     assert_kind_of Merchant, actual[0]
-    assert_equal 1, actual.length
-    assert_equal 29, actual[0].id
+    assert_equal 21, actual.length
+    assert_equal 12334113, actual[0].id
   end
 
   def test_it_can_find_a_merchants_revenue
     assert_equal 875, @sa_synthetic_data.revenue_by_merchant(1)
+  end
+
+  def test_it_can_return_the_best_selling_items_for_a_merchant
+    actual = @sa_actual.most_sold_item_for_merchant(12334145)
+
+
+    assert_kind_of Item, actual[0]
+    assert_equal 3, actual.count
+  end
+
+  def test_it_can_return_the_best_item_for_a_merchant_in_terms_of_revenue
+    skip
+    @sa.best_item_for_merchant(merchant_id)
+    #=> item (in terms of revenue generated)
   end
 
 end

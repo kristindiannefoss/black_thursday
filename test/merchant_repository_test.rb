@@ -9,10 +9,10 @@ class MerchantRepositoryTest < Minitest::Test
   attr_reader :merchants, :merchant1, :merchant2, :merchant3, :merchant4, :se
 
   def setup
-    @merchant1 = Merchant.new({id: 12335099, name: "silvia2knit"})
-    @merchant2 = Merchant.new({id: 12335101, name: "TinyHatsbyHG"})
-    @merchant3 = Merchant.new({id: 12335104, name: "AdventureEmporium"})
-    @merchant4 = Merchant.new({id: 12335105, name: "AdventurehatsEmporium"})
+    @merchant1 = Merchant.new({id: 12335099, name: "silvia2knit", :created_at => "2010-12-10"})
+    @merchant2 = Merchant.new({id: 12335101, name: "TinyHatsbyHG", :created_at => "2010-12-10"})
+    @merchant3 = Merchant.new({id: 12335104, name: "AdventureEmporium", :created_at => "2010-12-10"})
+    @merchant4 = Merchant.new({id: 12335105, name: "AdventurehatsEmporium", :created_at => "2010-12-10"})
 
     @merchants  = [merchant1, merchant2, merchant3, merchant4]
 
