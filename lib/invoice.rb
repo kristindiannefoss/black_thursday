@@ -36,9 +36,7 @@ class Invoice
   end
 
   def is_paid_in_full?
-    transactions.any? do |transaction|
-      transaction.result == "success"
-    end
+    transactions.any? {|transaction| transaction.result == "success"}
   end
 
   def total
@@ -50,9 +48,7 @@ class Invoice
   end
 
   def is_pending?
-    transactions.all? do |transaction|
-      transaction.result == "failed"
-    end
+    transactions.all? {|transaction| transaction.result == "failed"}
   end
 
   def items_and_counts

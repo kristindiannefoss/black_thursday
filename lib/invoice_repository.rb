@@ -17,9 +17,7 @@ class InvoiceRepository
   end
 
   def count_by_status
-    invoices_by_status = all.group_by do |invoice|
-      invoice.status
-    end
+    invoices_by_status = all.group_by {|invoice| invoice.status}
 
     status_count = invoices_by_status.each do |key, value|
       invoices_by_status[key] = value.count
@@ -31,21 +29,15 @@ class InvoiceRepository
   end
 
   def find_all_by_customer_id(customer_id)
-    invoices.select do |invoice|
-      invoice.customer_id == customer_id
-    end
+    invoices.select {|invoice| invoice.customer_id == customer_id}
   end
 
   def find_all_by_merchant_id(merchant_id)
-    invoices.select do |invoice|
-      invoice.merchant_id == merchant_id
-    end
+    invoices.select {|invoice| invoice.merchant_id == merchant_id}
   end
 
   def find_all_by_status(status)
-    invoices.select do |invoice|
-      invoice.status == status
-    end
+    invoices.select {|invoice| invoice.status == status}
   end
 
   def find_all_by_date(created_at)
@@ -55,9 +47,7 @@ class InvoiceRepository
   end
 
   def find_all_pending
-    invoices.select do |invoice|
-      invoice.is_pending?
-    end
+    invoices.select {|invoice| invoice.is_pending?}
   end
 
   def inspect
