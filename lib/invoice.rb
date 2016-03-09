@@ -53,4 +53,16 @@ class Invoice
     end
   end
 
+  def items_and_counts
+    items_and_counts = Hash.new(0)
+    items.each do |item|
+      invoice_items = repository.sales_engine.invoice_items.find_all_by_invoice_id(id)
+
+      invoice_items.each do |invoice_item|
+        items_and_counts[invoice_item.item] += invoice_item.quantity
+      end
+    end
+    items_and_counts
+  end
+
 end
