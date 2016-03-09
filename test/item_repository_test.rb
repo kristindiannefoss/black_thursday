@@ -68,7 +68,7 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal expected, @ir.find_all_by_price_in_range((625..675))
   end
 
-  def test_it_returns_an_empty_array_for_a_price_that_does_not_exist
+  def test_it_returns_an_empty_array_for_a_price_in_range_that_does_not_exist
     expected = []
     assert_equal expected, @ir.find_all_by_price_in_range((600..625))
   end

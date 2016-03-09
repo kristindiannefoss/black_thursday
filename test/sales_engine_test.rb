@@ -168,4 +168,9 @@ class SalesEngineTest < Minitest::Test
     assert_kind_of BigDecimal, total_balance
   end
 
+  def test_a_merchant_can_find_its_revenues
+    merchant = @se_synthetic_data.merchants.find_by_id(1)
+    assert_equal 875, merchant.revenue
+  end
+
 end

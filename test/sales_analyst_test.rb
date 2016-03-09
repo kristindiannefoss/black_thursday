@@ -15,6 +15,29 @@ class SalesAnalystTest < Minitest::Test
       :customers    => "./test/test_data/customers_stub.csv"
     })
     @sa = SalesAnalyst.new(@se)
+
+    @se_synthetic_data = SalesEngine.from_csv({
+    :items         => "./test/test_data/fudge_data/items_stub.csv",
+    :merchants     => "./test/test_data/fudge_data/merchants_stub.csv",
+    :invoices      => "./test/test_data/fudge_data/invoices_stub.csv",
+    :invoice_items => "./test/test_data/fudge_data/invoice_items_stub.csv",
+    :transactions  => "./test/test_data/fudge_data/transactions_stub.csv",
+    :customers     => "./test/test_data/fudge_data/customers_stub.csv"
+    })
+
+    @sa_synthetic_data = SalesAnalyst.new(@se_synthetic_data)
+
+    @se_actual = SalesEngine.from_csv({
+    :items         => "./data/items.csv",
+    :merchants     => "./data/merchants.csv",
+    :invoices      => "./data/invoices.csv",
+    :invoice_items => "./data/invoice_items.csv",
+    :transactions  => "./data/transactions.csv",
+    :customers     => "./data/customers.csv"
+    })
+
+    @sa_actual = SalesAnalyst.new(@se_actual)
+
   end
 
   def test_it_can_be_created_with_new
@@ -117,4 +140,51 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 51.61, @sa.invoice_status(:shipped) # => 93.75
     assert_equal 16.13, @sa.invoice_status(:returned) # => 1.00
   end
+
+  def test_it_can_calculate_total_revenue_by_day_for_a_given_day
+    assert_equal 2728.45, @sa_synthetic_data.total_revenue_by_date(Time.parse('2016-02-28 20:57:42 UTC'))
+  end
+
+  def test_it_can_return_top_revenue_earners
+    assert_kind_of Merchant, @sa_synthetic_data.top_revenue_earners(3)[0]
+    assert_equal 2, @sa_synthetic_data.top_revenue_earners(3)[0].id
+  end
+
+  def test_it_can_find_merchants_with_a_pending
+    assert_kind_of Merchant, @sa_actual.merchants_with_pending_invoices[0]
+    assert_equal 12335955, @sa_actual.merchants_with_pending_invoices[0].id
+    assert_equal 467, @sa_actual.merchants_with_pending_invoices.count
+  end
+
+  def test_it_can_find_merchants_with_only_one_item
+    assert_kind_of Merchant, @sa_actual.merchants_with_only_one_item[0]
+  end
+
+  def test_it_can_find_merchants_with_only_one_item_by_month
+    actual = @sa_actual.merchants_with_only_one_item_registered_in_month("March")
+    assert_kind_of Merchant, actual[0]
+    assert_equal 21, actual.length
+    assert_equal 12334113, actual[0].id
+  end
+
+  def test_it_can_find_a_merchants_revenue
+    assert_equal 875, @sa_synthetic_data.revenue_by_merchant(1)
+  end
+
+  def test_it_can_return_the_best_selling_items_for_a_merchant
+    actual = @sa_actual.most_sold_item_for_merchant(12334145)
+
+
+    assert_kind_of Item, actual[0]
+    assert_equal 3, actual.count
+  end
+
+  def test_it_can_return_the_best_item_for_a_merchant_in_terms_of_revenue
+    actual = @sa_actual.best_item_for_merchant(12334145)
+
+    assert_kind_of Item, actual
+    assert_equal 263412097, actual.id
+    #=> item (in terms of revenue generated)
+  end
+
 end

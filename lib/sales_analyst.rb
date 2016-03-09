@@ -131,4 +131,101 @@ class SalesAnalyst
     ((@sales_engine.invoices.count_by_status[status].to_f / @sales_engine.invoices.count) * 100).round(2)
   end
 
+  def total_revenue_by_date(date)
+    @sales_engine.invoices.find_all_by_date(date).map do |invoice|
+      invoice.total
+    end.compact.reduce(:+)
+  end
+
+  def merchants_ranked_by_revenue
+    merchant_revenue = @sales_engine.merchants.all.map do |merchant|
+      [merchant, merchant.revenue.to_f]
+    end
+
+    sorted_earners = merchant_revenue.sort_by do |merchant, revenue|
+      revenue
+    end.reverse
+
+    sorted_earners.map do |pair|
+      pair[0]
+    end
+  end
+
+  def top_revenue_earners(number_of_earners = 20)
+    merchants_ranked_by_revenue.take(number_of_earners)
+  end
+
+  def merchants_with_pending_invoices
+    @sales_engine.invoices.find_all_pending.map do |invoice|
+      invoice.merchant
+    end.uniq
+  end
+
+  def merchants_with_only_one_item
+    @sales_engine.merchants.all.map do |merchant|
+      merchant if merchant.items.count == 1
+    end.compact
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+    merchants_with_only_one_item.select do |merchant|
+      merchant.created_at.strftime("%B") == month
+    end
+  end
+
+  def revenue_by_merchant(merchant_id)
+    @sales_engine.merchants.find_by_id(merchant_id).revenue
+  end
+
+  def most_sold_item_for_merchant(merchant_id)
+    merchant_invoices = @sales_engine.invoices.find_all_by_merchant_id(merchant_id)
+
+    successful_invoices = merchant_invoices.select do |invoice|
+      invoice.is_paid_in_full?
+    end
+
+    merchant_invoice_items = successful_invoices.map do |merchant_invoice|
+      @sales_engine.invoice_items.find_all_by_invoice_id(merchant_invoice.id)
+    end.flatten
+
+    max_count = merchant_invoice_items.max_by do |invoice_item|
+      invoice_item.quantity
+    end.quantity
+
+    top_invoice_items = merchant_invoice_items.select do |invoice_item|
+      invoice_item.quantity == max_count
+    end
+
+    top_invoice_items.map do |invoice_item|
+      @sales_engine.items.find_by_id(invoice_item.item_id)
+    end
+  end
+
+  def best_item_for_merchant(merchant_id)
+    merchant_invoices = @sales_engine.invoices.find_all_by_merchant_id(merchant_id)
+
+    successful_invoices = merchant_invoices.select do |invoice|
+      invoice.is_paid_in_full?
+    end
+
+    merchant_invoice_items = successful_invoices.map do |merchant_invoice|
+      @sales_engine.invoice_items.find_all_by_invoice_id(merchant_invoice.id)
+    end.flatten
+
+    best_invoice_item = merchant_invoice_items.max_by do |invoice_item|
+      invoice_item.quantity * invoice_item.unit_price
+    end
+
+    best_item_price = best_invoice_item.quantity * best_invoice_item.unit_price
+
+    top_invoice_items = merchant_invoice_items.select do |invoice_item|
+      invoice_item.quantity * invoice_item.unit_price == best_item_price
+    end
+
+    top_invoice_item = top_invoice_items[0]
+
+    @sales_engine.items.find_by_id(top_invoice_item.item_id)
+
+  end
+
 end

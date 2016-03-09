@@ -19,7 +19,7 @@ class Transaction
     @result                      = args[:result]
     @created_at                  = Time.parse(args[:created_at])
     @updated_at                  = Time.parse(args[:updated_at])
-    @repository     = nil
+    @repository                  = nil
   end
 
   def invoice

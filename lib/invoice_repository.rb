@@ -24,7 +24,6 @@ class InvoiceRepository
     status_count = invoices_by_status.each do |key, value|
       invoices_by_status[key] = value.count
     end
-
   end
 
   def find_by_id(id)
@@ -49,7 +48,19 @@ class InvoiceRepository
     end
   end
 
+  def find_all_by_date(created_at)
+    invoices.select do |invoice_object|
+      invoice_object.created_at.strftime("%Y%m%d") == created_at.strftime("%Y%m%d")
+    end
+  end
+
+  def find_all_pending
+    invoices.select do |invoice_object|
+      invoice_object.is_pending?
+    end
+  end
+
   def inspect
-  "#<#{self.class} #{@merchants.size} rows>"
-end
+    "#<#{self.class} #{@merchants.size} rows>"
+  end
 end
