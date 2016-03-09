@@ -3,8 +3,13 @@ require 'time'
 
 
 class InvoiceItem
-  # attr_accessor :item, :invoice
-  attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at, :updated_at
+  attr_reader :id,
+              :item_id,
+              :invoice_id,
+              :quantity,
+              :unit_price,
+              :created_at,
+              :updated_at
   attr_accessor :repository
 
   def initialize(args)

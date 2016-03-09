@@ -27,7 +27,8 @@ class Merchant
   end
 
   def revenue
-    repository.sales_engine.invoices.find_all_by_merchant_id(id).map do |invoice|
+    merchant_inv = repository.sales_engine.invoices.find_all_by_merchant_id(id)
+    merchant_inv.map do |invoice|
       invoice.total
     end.reduce(:+)
   end

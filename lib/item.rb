@@ -3,7 +3,13 @@ require 'bigdecimal'
 require 'time'
 
 class Item
-  attr_reader :id, :name, :description, :unit_price, :merchant_id, :created_at, :updated_at
+  attr_reader :id,
+              :name,
+              :description,
+              :unit_price,
+              :merchant_id,
+              :created_at,
+              :updated_at
   attr_accessor :repository
 
   def initialize(args)
